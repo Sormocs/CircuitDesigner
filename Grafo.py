@@ -15,17 +15,19 @@ class Grafo:
 
         if inicio in self.vertices and fin in self.vertices:
             self.vertices[inicio].AgregarVecino(fin, valor)
+            self.vertices[fin].AgregarVecino(inicio, valor)
 
-    def Camino(self, inicio, fin):
+
+    def Camino(self, a, b):
 
         camino = []
-        actual = fin
+        actual = b
 
         while actual != None:
             camino.insert(0, actual)
             actual = self.vertices[actual].padre
 
-        return [camino, self.vertices[fin].distancia]
+        return [camino, self.vertices[b].distancia]
 
     def Minimo(self, lista):
 
@@ -50,14 +52,13 @@ class Grafo:
             for i in self.vertices:
                 if i != vertice:
                     self.vertices[i].distancia = float('inf')
-                else:
-                    self.vertices[i].padre = None
-                    noVisitados.append(i)
+
+                self.vertices[i].padre = None
+                noVisitados.append(i)
 
             while len(noVisitados) > 0:
 
                 for vecino in self.vertices[actual].vecinos:
-
                     if self.vertices[vecino[0]].visitado == False:
                         if self.vertices[actual].distancia + vecino[1] < self.vertices[vecino[0]].distancia:
                             self.vertices[vecino[0]].distancia = self.vertices[actual].distancia + vecino[1]

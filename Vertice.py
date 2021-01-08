@@ -7,7 +7,7 @@ class Vertice:
         self.id = i
         self.vecinos = []
         self.visitado = False
-        self.padres = None
+        self.padre = None
         self.distancia = float('inf')
 
     def AgregarVecino(self, vertice, valor):
