@@ -1,16 +1,28 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import Grafo
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    grafo = Grafo.Grafo()
+
+    grafo.AgregarVertice(1, "hola", 50)
+    grafo.AgregarVertice(2, "hola", 50)
+    grafo.AgregarVertice(3, "hola", 50)
+    grafo.AgregarVertice(4, "hola", 50)
+    grafo.AgregarVertice(5, "hola", 50)
+    grafo.AgregarVertice(6, "hola", 50)
+    grafo.AgregarArista(1,2,5)
+    grafo.AgregarArista(1, 3, 23)
+    grafo.AgregarArista(1, 4, 11)
+    grafo.AgregarArista(1, 5, 141)
+    grafo.AgregarArista(1, 6, 131)
+    grafo.AgregarArista(2, 1, 13)
+    grafo.AgregarArista(2, 4, 23)
+    grafo.AgregarArista(2, 5, 134)
+    grafo.AgregarArista(5, 6, 213)
+
+    grafo.Dikjstra(1)
+    print(grafo.Camino(1,6))
+
+
+
