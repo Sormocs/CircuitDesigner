@@ -98,3 +98,13 @@ class Grafo:
 
         self.vertices[i].nombre = n
         self.vertices[i].valor = v
+
+    def GenerarLista(self):
+
+        lista = []
+
+        for i in self.vertices:
+
+            lista.append(self.vertices[i])
+
+        return  lista

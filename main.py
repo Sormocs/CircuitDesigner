@@ -24,9 +24,10 @@ def GrafoGen():
     grafo.AgregarArista(3, 4, 11)
     grafo.AgregarArista(4, 6, 1)
 
-    grafo.Dikjstra(1)
-    print(grafo.Camino(1, 6))
-    print(grafo.vertices)
+    #grafo.Dikjstra(1)
+    #print(grafo.Camino(1, 6))
+    #print(grafo.vertices)
+
 
 def Main_Win():
     run = True
@@ -49,8 +50,8 @@ def Main_Win():
                     GrafoGen()
 
 if __name__ == '__main__':
-    Formulas1 = Formulas()
-    Main_Win()
+    #Formulas1 = Formulas()
+    #Main_Win()
 
-    grafo.Eliminar("feo")
-    print(grafo.vertices)
+    GrafoGen()
+
