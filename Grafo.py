@@ -15,8 +15,29 @@ class Grafo:
 
         if inicio in self.vertices and fin in self.vertices:
             self.vertices[inicio].AgregarVecino(fin, valor)
-            self.vertices[fin].AgregarVecino(inicio, valor)
+            #self.vertices[fin].AgregarVecino(inicio, valor)
 
+
+    def BuscarID(self, nombre):
+
+        for i in self.vertices:
+
+            if self.vertices[i].nombre == nombre:
+
+                return self.vertices[i].id
+
+    def Eliminar(self, nombre):
+
+        id = self.BuscarID(nombre)
+        del(self.vertices[id])
+        self.EliminarArita(id)
+
+    def EliminarArita(self, id):
+
+        for i in self.vertices:
+            for j in self.vertices[i].vecinos:
+                if j[0] == id:
+                    self.vertices[i].vecinos.remove(j)
 
     def Camino(self, a, b):
 
@@ -71,3 +92,9 @@ class Grafo:
 
         else:
             return False
+
+
+    def EditarVertice(self,i,n,v):
+
+        self.vertices[i].nombre = n
+        self.vertices[i].valor = v
