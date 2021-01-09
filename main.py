@@ -12,9 +12,9 @@ def GrafoGen():
     grafo = Grafo.Grafo()
 
     grafo.AgregarVertice(1, "hola", 50)
+    grafo.AgregarVertice(4, "hola", 50)
     grafo.AgregarVertice(2, "hola", 50)
     grafo.AgregarVertice(3, "feo", 50)
-    grafo.AgregarVertice(4, "hola", 50)
     grafo.AgregarVertice(5, "hola", 50)
     grafo.AgregarVertice(6, "juan", 50)
     grafo.AgregarArista(1,6,5222222)
@@ -48,10 +48,23 @@ def Main_Win():
             if event.type == pygame.MOUSEBUTTONUP:
                 if createbtn.Click(pos):
                     GrafoGen()
+                    run = False
+                    DesignWin()
+
+def DesignWin():
+    run = True
+    while run:
+        screen.fill((0,0,0))
+        pygame.display.update()
+        for event in pygame.event.get():
+            pos = pygame.mouse.get_pos()
+            if event.type == pygame.QUIT:
+                run = False
+                pygame.quit()
+                sys.exit()
 
 if __name__ == '__main__':
     #Formulas1 = Formulas()
-    #Main_Win()
-
+    Main_Win()
     GrafoGen()
 
