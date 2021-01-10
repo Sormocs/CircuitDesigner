@@ -8,27 +8,6 @@ pygame.init()
 screen = pygame.display.set_mode((800,600))
 pygame.display.set_caption("Circuit Designer")
 
-def GrafoGen():
-    grafo = Grafo.Grafo()
-
-    grafo.AgregarVertice(1, "hola", 50)
-    grafo.AgregarVertice(4, "hola", 50)
-    grafo.AgregarVertice(2, "hola", 50)
-    grafo.AgregarVertice(3, "feo", 50)
-    grafo.AgregarVertice(5, "hola", 50)
-    grafo.AgregarVertice(6, "juan", 50)
-    grafo.AgregarArista(1,6,5222222)
-    grafo.AgregarVertice(6, "hola", 50)
-    grafo.AgregarArista(1, 6, 5222222)
-    grafo.AgregarArista(1, 3, 23)
-    grafo.AgregarArista(3, 4, 11)
-    grafo.AgregarArista(4, 6, 1)
-
-    #grafo.Dikjstra(1)
-    #print(grafo.Camino(1, 6))
-    #print(grafo.vertices)
-
-
 def Main_Win():
     run = True
     # BOTON: color boton, posicion x, posicion y, ancho, altura, tamano de letra, texto, color texto
@@ -47,7 +26,6 @@ def Main_Win():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONUP:
                 if createbtn.Click(pos):
-                    GrafoGen()
                     run = False
                     DesignWin()
 
@@ -75,5 +53,5 @@ def DesignWin():
 if __name__ == '__main__':
     #Formulas1 = Formulas()
     Main_Win()
-    GrafoGen()
+
 

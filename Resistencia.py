@@ -1,6 +1,6 @@
 class Resistencia:
 
-    def __init__(self,nombre, valor):
+    def __init__(self,nombre, valor, amperios):
 
         self.nombre = nombre
         self.valor = valor
@@ -10,4 +10,7 @@ class Resistencia:
 
     def SetNombre(self,n):
         self.nombre = n
+
+    def GetNombre(self):
+        return self.nombre
 
