@@ -52,9 +52,18 @@ def Main_Win():
                     DesignWin()
 
 def DesignWin():
+    # BOTON: color boton, posicion x, posicion y, ancho, altura, tamano de letra, texto, color texto
+    addbtn = Button((255, 255, 255), 830, 30, 150, 60, 26, "Agregar", (160, 160, 160))
+    deletebtn = Button((255, 255, 255), 830, 120, 150, 60, 26, "Eliminar", (160, 160, 160))
+    SimuationBTN =  Button((255, 255, 255), 830, 480, 150, 60, 26, "Simular", (160, 160, 160))
+    pygame.display.set_mode((1000,600))
     run = True
     while run:
         screen.fill((0,0,0))
+        addbtn.Draw(screen)
+        deletebtn.Draw(screen)
+        SimuationBTN.Draw(screen)
+        pygame.draw.rect(screen, (95, 158, 160), [20, 100, 800, 400])
         pygame.display.update()
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()
