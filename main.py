@@ -29,17 +29,28 @@ def Main_Win():
                     run = False
                     DesignWin()
 
+def AddRes(graph):
+
+    graph.AgregarVertice("Res1",10,10,False)
+
+def AddPower(graph):
+
+    graph.AgregarVertice("Power",10,10,True)
+
+
 def DesignWin():
     # BOTON: color boton, posicion x, posicion y, ancho, altura, tamano de letra, texto, color texto
-    addbtn = Button((255, 255, 255), 830, 30, 150, 60, 26, "Agregar", (160, 160, 160))
-    deletebtn = Button((255, 255, 255), 830, 120, 150, 60, 26, "Eliminar", (160, 160, 160))
+    addres = Button((255, 255, 255), 830, 30, 150, 60, 26, "Resistencia", (160, 160, 160))
+    addpower = Button((255, 255, 255), 830, 120, 150, 60, 26, "Fuente", (160, 160, 160))
     SimuationBTN =  Button((255, 255, 255), 830, 480, 150, 60, 26, "Simular", (160, 160, 160))
     pygame.display.set_mode((1000,600))
+    graph = Grafo.Grafo()
     run = True
+
     while run:
         screen.fill((0,0,0))
-        addbtn.Draw(screen)
-        deletebtn.Draw(screen)
+        addres.Draw(screen)
+        addpower.Draw(screen)
         SimuationBTN.Draw(screen)
         pygame.draw.rect(screen, (95, 158, 160), [20, 100, 800, 400])
         pygame.display.update()
@@ -49,7 +60,11 @@ def DesignWin():
                 run = False
                 pygame.quit()
                 sys.exit()
-
+            if event.type == pygame.MOUSEBUTTONUP:
+                if addres.Click(pos):
+                    AddRes(graph)
+                elif addpower.Click(pos):
+                    AddPower(graph)
 if __name__ == '__main__':
     #Formulas1 = Formulas()
     Main_Win()
