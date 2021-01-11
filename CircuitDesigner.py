@@ -11,21 +11,21 @@ BLUE = (0,0,255)
 
 screen = pygame.display.set_mode((800,600))
 pygame.display.set_caption("Circuit Designer")
-left_background = pygame.image.load(r'Imagenes\fondo1.jpg')
+left_background = pygame.image.load(r'Images\fondo1.jpg')
 
 #Components images
-node2 = pygame.image.load(r'Imagenes\resistor1.png')
+node2 = pygame.image.load(r'Images\resistor1.png')
 #node2.set_colorkey([255,255,255])
-power1 = pygame.image.load(r'Imagenes\power.png')
+power1 = pygame.image.load(r'Images\power.png')
 
 #Buttons images
-r_resistor = pygame.image.load(r'Imagenes\r_resistor.png')
+r_resistor = pygame.image.load(r'Images\r_resistor.png')
 r_resistor.set_colorkey([255,255,255])
-edge = pygame.image.load(r'Imagenes\add_edges.png')
-power = pygame.image.load(r'Imagenes\power.png')
+edge = pygame.image.load(r'Images\add_edges.png')
+power = pygame.image.load(r'Images\power.png')
 power.set_colorkey([255,255,255])
-cross = pygame.image.load(r'Imagenes\cross.png')
-algo_button = pygame.image.load(r'Imagenes\algo_button.png')
+cross = pygame.image.load(r'Images\cross.png')
+algo_button = pygame.image.load(r'Images\algo_button.png')
 button_font = pygame.font.Font('roboto.ttf', 20)
 msg_font = pygame.font.Font('roboto.ttf', 15)
 fuente2 = pygame.font.Font(None,25)
@@ -45,7 +45,7 @@ power_button = power
 nodes = []
 edges= []
 powers = []
-color = [node2]
+color = [node2, power1]
 node_color = []
 
 color_power = [power1]
@@ -112,7 +112,7 @@ def show_powers():
 
 def show_edges():
     for i in range(len(edges)):
-            pygame.draw.line(screen,BLACK,(powers[edges[i][0]][0]+16,powers[edges[i][0]][1]+16),(powers[edges[i][1]][0]+16,powers[edges[i][1]][1]+16),1)
+            pygame.draw.line(screen,BLACK,(nodes[edges[i][0]][0]+16,nodes[edges[i][0]][1]+16),(nodes[edges[i][1]][0]+16,nodes[edges[i][1]][1]+16),1)
             #pygame.draw.line(screen, BLACK, nodes, powers)
             
 def show_buttons():
@@ -189,7 +189,7 @@ while running:
                 if state == 'start':
                     if(isClicked(5,5,5+node_button.get_width(),5+node_button.get_height(),pos[0],pos[1])):
                         state = 'add_node'
-                        msg = 'Click on the screen to add a node there.'
+                        msg = 'Click on the screen to add a node or power there.'
 
                     elif(isClicked(5,42,5+power_button.get_width(),42+power_button.get_height(),pos[0],pos[1])):
                         state = 'add_power'
@@ -208,13 +208,16 @@ while running:
                         power_color.clear()
 
                 elif state == 'add_node':
-                    if pos[0]>200 and pos[1]<550:
-                        nodes.append((pos[0]-16,pos[1]-16))
-                        node_color.append(color[0]) 
-
                     if(isClicked(5,5,5+cross.get_width(),5+cross.get_height(),pos[0],pos[1])):
                         state = 'start'
                         msg = ''
+                    if pos[0]>200 and pos[1]<550:
+                        nodes.append((pos[0]-16,pos[1]-16))
+                        node_color.append(color[0])
+                    #else:
+                     #   nodes.append((pos[0]-16,pos[1]-16))
+                      #  node_color.append(color[1])
+
                     
                     #if pos[0]>200 and pos[0]<300:
                      #       powers.append((pos[0]-16,pos[1]-16))
@@ -222,14 +225,14 @@ while running:
                            
                 elif state == 'add_power':  
                     if pos[0]>200 and pos[1]<550:
-                        powers.append((pos[0]-16,pos[1]-16))
-                        power_color.append(color_power[0])
+                        nodes.append((pos[0]-16,pos[1]-16))
+                        node_color.append(color[1])
                     if(isClicked(5,5,5+cross.get_width(),5+cross.get_height(),pos[0],pos[1])):
                         state = 'start'
                         msg = ''
   
                 elif state == 'add_edge1':
-                    pointA = getPowers(pos[0],pos[1]) 
+                    pointA = getNode(pos[0],pos[1]) 
                     if(pointA != -1):
                         state = 'add_edge2'
                         msg = 'Choose terminal vertex of the edge.'
@@ -239,7 +242,7 @@ while running:
 
 
                 elif state == 'add_edge2':
-                    pointB = getPowers(pos[0],pos[1])
+                    pointB = getNode(pos[0],pos[1])
                     if pointB != -1 and pointB != pointA:
                         edges.append((pointA,pointB))
                         edges.append((pointB,pointA))
@@ -264,3 +267,4 @@ while running:
     clock.tick(60)
     
 pygame.quit()
+
