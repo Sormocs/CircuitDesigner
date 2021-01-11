@@ -215,7 +215,7 @@ while running:
                     if(isClicked(5,5,5+cross.get_width(),5+cross.get_height(),pos[0],pos[1])):
                         state = 'start'
                         msg = ''
-                    if pos[0]>400:
+                    if os[0]>200 and pos[1]<550:
                         nodes.append((pos[0]-16,pos[1]-16))
                         components_type.append(components[0])
                     #else:
