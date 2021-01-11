@@ -45,8 +45,6 @@ power_button = power
 nodes = []
 edges= []
 powers = []
-components = [node2, power1]
-components_type = []
 
 components = [node2, power1]
 components_type = []
