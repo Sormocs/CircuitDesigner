@@ -45,8 +45,11 @@ power_button = power
 nodes = []
 edges= []
 powers = []
-color = [node2, power1]
-node_color = []
+components = [node2, power1]
+components_type = []
+
+components = [node2, power1]
+components_type = []
 
 color_power = [power1]
 power_color = []
@@ -95,7 +98,7 @@ def getNode(mos_x,mos_y):
 def show_nodes():
     if(len(nodes)==0): return
     for i in range(len(nodes)):
-        screen.blit(node_color[i],nodes[i])
+        screen.blit(components_type[i],nodes[i])
 
 def getPowers(mos_x,mos_y):
     for i in range(len(powers)):
@@ -198,11 +201,12 @@ while running:
                     elif(isClicked(5,79,5+edge_button.get_width(),79+edge_button.get_height(),pos[0],pos[1])):
                         state = 'add_edge1'
                         msg = 'Choose initial vertex of the edge.'
+                    
                         
             
                     elif(isClicked(7,550,7+algo_button.get_width(),550+algo_button.get_height(),pos[0],pos[1])):
                         nodes.clear()
-                        node_color.clear()
+                        components_type.clear()
                         edges.clear()
                         powers.clear()
                         power_color.clear()
@@ -211,12 +215,12 @@ while running:
                     if(isClicked(5,5,5+cross.get_width(),5+cross.get_height(),pos[0],pos[1])):
                         state = 'start'
                         msg = ''
-                    if pos[0]>200 and pos[1]<550:
+                    if pos[0]>400:
                         nodes.append((pos[0]-16,pos[1]-16))
-                        node_color.append(color[0])
+                        components_type.append(components[0])
                     #else:
                      #   nodes.append((pos[0]-16,pos[1]-16))
-                      #  node_color.append(color[1])
+                      #  components_type.append(components[1])
 
                     
                     #if pos[0]>200 and pos[0]<300:
@@ -226,7 +230,7 @@ while running:
                 elif state == 'add_power':  
                     if pos[0]>200 and pos[1]<550:
                         nodes.append((pos[0]-16,pos[1]-16))
-                        node_color.append(color[1])
+                        components_type.append(components[1])
                     if(isClicked(5,5,5+cross.get_width(),5+cross.get_height(),pos[0],pos[1])):
                         state = 'start'
                         msg = ''
@@ -267,4 +271,5 @@ while running:
     clock.tick(60)
     
 pygame.quit()
+
 
