@@ -1,5 +1,6 @@
 from Button import Button
 from Calculos import Formulas
+from CircuitDesigner import Circuit
 import Grafo
 import pygame
 import sys
@@ -39,32 +40,9 @@ def AddPower(graph):
 
 
 def DesignWin():
-    # BOTON: color boton, posicion x, posicion y, ancho, altura, tamano de letra, texto, color texto
-    addres = Button((255, 255, 255), 830, 30, 150, 60, 26, "Resistencia", (160, 160, 160))
-    addpower = Button((255, 255, 255), 830, 120, 150, 60, 26, "Fuente", (160, 160, 160))
-    SimuationBTN =  Button((255, 255, 255), 830, 480, 150, 60, 26, "Simular", (160, 160, 160))
-    pygame.display.set_mode((1000,600))
-    graph = Grafo.Grafo()
-    run = True
-
-    while run:
-        screen.fill((0,0,0))
-        addres.Draw(screen)
-        addpower.Draw(screen)
-        SimuationBTN.Draw(screen)
-        pygame.draw.rect(screen, (95, 158, 160), [20, 100, 800, 400])
-        pygame.display.update()
-        for event in pygame.event.get():
-            pos = pygame.mouse.get_pos()
-            if event.type == pygame.QUIT:
-                run = False
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONUP:
-                if addres.Click(pos):
-                    AddRes(graph)
-                elif addpower.Click(pos):
-                    AddPower(graph)
+    print(screen)
+    CircuitDes = Circuit()
+    CircuitDes.RunWin(screen)
 if __name__ == '__main__':
     #Formulas1 = Formulas()
     Main_Win()
