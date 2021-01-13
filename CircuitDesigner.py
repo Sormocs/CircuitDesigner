@@ -1,6 +1,8 @@
 #Circuit Design 
 import pygame
+import pygame as pg
 import sys
+
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -237,12 +239,12 @@ class Circuit:
 
 
             for event in pygame.event.get():
+                pos = pygame.mouse.get_pos()
                 if event.type == pygame.QUIT:
                     running = False
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONUP:
-                    pos = pygame.mouse.get_pos()
                     if(pos[0]!=-1 & pos[1]!=-1):
                         if self.state == 'start':
                             if(self.isClicked(5,5,5+self.node_button.get_width(),5+self.node_button.get_height(),pos[0],pos[1])):
@@ -272,9 +274,6 @@ class Circuit:
                             if(self.isClicked(5,5,5+self.cross.get_width(),5+self.cross.get_height(),pos[0],pos[1])):
                                 self.state = 'start'
                                 self.msg = ''
-                            if pos[0]>200 and pos[1]<550:
-                                self.nodes.append((pos[0]-16,pos[1]-16))
-                                self.components_type.append(self.components[0])
                             
                             if(self.isClicked(5,250,5+self.add_button.get_width(),250+self.add_button.get_height(),pos[0],pos[1])):
                                 if self.resistorName == "" or self.resistorValue == "":
@@ -288,16 +287,17 @@ class Circuit:
                                     print("Resistors list values: ",self.resistors_value)
 
                                     self.resistorName = ""
-                                    self.resistorValue = ""  
+                                    self.resistorValue = ""
 
-                                    #self.screen.blit(components_type[1])
+                                    self.nodes.append((250,250))
+                                    self.components_type.append(self.components[0])
+
+                                    #self.screen.blit(self.components_type[1])
+
+
 
                         #Add power_supply mode           
-                        elif self.state == 'add_power_supply':  
-                            if pos[0]>200 and pos[1]<550:
-                                self.nodes.append((pos[0]-16,pos[1]-16))
-                                self.components_type.append(self.components[1])
-                                #show_nodes()
+                        elif self.state == 'add_power_supply':
                             if(self.isClicked(5,5,5+self.cross.get_width(),5+self.cross.get_height(),pos[0],pos[1])):
                                 self.state = 'start'
                                 self.msg = ''
@@ -320,6 +320,9 @@ class Circuit:
                                     self.power_supplyName = ""
                                     self.power_supplyValue = ""   
                                     self.screen.blit(self.edge,(300,100))
+
+                                    self.nodes.append((250,250))
+                                    self.components_type.append(self.components[1])
 
                         elif self.state == 'add_edge1':
                             self.pointA = self.getNode(pos[0],pos[1])
@@ -412,7 +415,19 @@ class Circuit:
                         powerSupplyVlueInfo = self.fuente2.render(self.power_supplyValue, True, (0,0,0))
                         self.screen.blit(powerSupplyNameInfo,(PositionMenu[0],PositionMenu[1]))
                         self.screen.blit(powerSupplyVlueInfo,(PositionMenu[0],PositionMenu[1]+20))
-                
+
+                if event.type == pg.MOUSEMOTION:
+                    if event.buttons[0]:
+
+                        i = self.getNode(pos[0],pos[1])
+
+                        if i != -1:
+                            tuple = self.nodes[i]
+
+                            x = tuple[0] + event.rel[0]
+                            y = tuple[1] + event.rel[1]
+
+                            self.nodes[i] = (x,y)
                         
 
             self.show_edges()

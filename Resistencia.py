@@ -1,9 +1,10 @@
 class Resistencia:
 
-    def __init__(self,nombre, valor, amperios):
+    def __init__(self,nombre, voltaje, amperios):
 
         self.nombre = nombre
-        self.valor = valor
+        self.voltaje = voltaje
+        self.amperios = amperios
 
     def SetValor(self, v):
         self.valor = v

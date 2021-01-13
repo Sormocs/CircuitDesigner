@@ -3,7 +3,7 @@ import Fuente
 
 class Vertice:
 
-    def __init__(self, i, n, v,a,t):
+    def __init__(self, i,n,v,a,t,pos):
 
         self.id = i
         self.vecinos = []
@@ -11,6 +11,7 @@ class Vertice:
         self.padre = None
         self.distancia = float('inf')
         self.CrearComponente(n,v,a,t)
+        self.pos = pos
 
     def AgregarVecino(self, vertice, valor):
 
@@ -20,9 +21,6 @@ class Vertice:
     def CrearComponente(self,n,v,a,t):
 
         if t:
-
             self.componente = Fuente.fuente(n,v)
-
         else:
-
             self.componente = Resistencia.Resistencia(n,v,a)

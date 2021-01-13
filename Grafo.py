@@ -6,9 +6,9 @@ class Grafo:
         self.vertices = {}
         self.id = 1
 
-    def AgregarVertice(self,n,v,a,t):
+    def AgregarVertice(self,n,v,a,t,c):
 
-        self.vertices[self.id] = Vertice.Vertice(self.id,n,v,a,t)
+        self.vertices[self.id] = Vertice.Vertice(self.id,n,v,a,t,c)
         self.id+=1
 
     def AgregarArista(self, inicio, fin, valor):
@@ -21,8 +21,6 @@ class Grafo:
     def BuscarID(self, nombre):
 
         for i in self.vertices:
-
-
             if self.vertices[i].componente.GetNombre() == nombre:
 
                 return self.vertices[i].id
@@ -48,6 +46,10 @@ class Grafo:
 
         for i in self.vertices[id].vecinos:
             i[1] = valor
+
+    def CambiarPos(self, coords, id):
+
+        self.vertices[id].pos = coords
 
     def Camino(self, a, b):
 
