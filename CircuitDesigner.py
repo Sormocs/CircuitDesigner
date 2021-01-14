@@ -2,6 +2,7 @@
 import pygame
 import pygame as pg
 import sys
+import Grafo
 
 
 pygame.init()
@@ -86,6 +87,8 @@ class Circuit:
     point = -1
     state = 'start'
     msg = ''
+
+    graph = Grafo.Grafo()
 
     #Components configuratios states
     nameRectStatus = False
@@ -292,6 +295,9 @@ class Circuit:
                                     self.nodes.append((250,250))
                                     self.components_type.append(self.components[0])
 
+                                    self.graph.AgregarVertice(self.resistors_names[-1], int(self.resistors_value[-1]),
+                                                              50, False, [250,250])
+
                                     #self.screen.blit(self.components_type[1])
 
 
@@ -324,6 +330,9 @@ class Circuit:
                                     self.nodes.append((250,250))
                                     self.components_type.append(self.components[1])
 
+                                    self.graph.AgregarVertice(self.power_supply_names[-1], int(self.power_supply_value[-1]),
+                                                              0, True, [250, 250])
+
                         elif self.state == 'add_edge1':
                             self.pointA = self.getNode(pos[0],pos[1])
                             if(self.pointA != -1):
@@ -338,6 +347,7 @@ class Circuit:
                             if self.pointB != -1 and self.pointB != self.pointA:
                                 self.edges.append((self.pointA,self.pointB))
                                 self.edges.append((self.pointB,self.pointA))
+                                self.graph.AgregarArista(self.pointA,self.pointB,0)
                                 self.state = 'add_edge1'
                                 self.msg = 'Choose initial vertex of the edge.'
                                 self.pointA = -1
@@ -428,6 +438,8 @@ class Circuit:
                             y = tuple[1] + event.rel[1]
 
                             self.nodes[i] = (x,y)
+
+                            self.graph.vertices[i+1].pos = [x,y]
                         
 
             self.show_edges()

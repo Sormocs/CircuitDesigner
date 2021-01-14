@@ -17,7 +17,6 @@ class Grafo:
             self.vertices[inicio].AgregarVecino(fin, valor)
             #self.vertices[fin].AgregarVecino(inicio, volts)
 
-
     def BuscarID(self, nombre):
 
         for i in self.vertices:
