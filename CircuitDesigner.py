@@ -48,6 +48,7 @@ class Circuit:
     delete_edge = button_font.render('Delete Edges', True, BLACK)
     add_power_supply = button_font.render('Add power supply', True, BLACK)
     end_desing = button_font.render('End Desing', True, BLACK)
+    simulation_button = button_font.render('Simulate', True, WHITE) 
     clear_button = button_font.render('Clear Screen', True, WHITE) 
     msg_box = msg_font.render('', True, BLUE);
 
@@ -77,6 +78,7 @@ class Circuit:
     powers = []
     components = [node2, power_supply1]
     components_type = []
+    yellow_edges = []
 
     color_power_supply = [power_supply1]
     power_supply_color = []
@@ -125,6 +127,41 @@ class Circuit:
         else:
             return False
 
+    def simulation_mode(self,s,vis,adj):
+        vis[s] = 1
+        if self.components_type[s] == self.components[1]:
+            self.components_type[s] = self.components[0]
+        else:
+            if self.components_type[s] == self.components[0]:
+                self.components_type[s] = self.components[1]
+            
+        self.show_edges()
+        self.show_nodes()
+        pygame.display.update()
+        pygame.time.delay(500)
+        for i in range(len(adj[s])):
+            if vis[adj[s][i]] != 1:
+                self.yellow_edges.append((s,adj[s][i]))
+                self.yellow_edges.append((adj[s][i],s))
+                self.show_edges()
+                self.show_nodes()
+                pygame.display.update()
+                pygame.time.delay(200)
+                self.simulation_mode(adj[s][i],vis,adj)
+
+    def start_simulation_mode(self,point):
+        if(len(self.nodes)==0 or len(self.edges)==0):
+            return
+        adj = [[] for i in range(len(self.nodes))]
+        vis = [0 for i in range(len(self.nodes))]
+        for i in range(len(self.edges)):
+            adj[self.edges[i][0]].append(self.edges[i][1])
+        self.simulation_mode(point,vis,adj)
+
+    def make_equal(self, listA, listB):
+        for i in range(len(listA)):
+            listA[i] = listB[i]
+            
     def getNode(self,mos_x,mos_y):
         for i in range(len(self.nodes)):
             self.x1 = self.nodes[i][0]
@@ -154,12 +191,16 @@ class Circuit:
     def show_edges(self):
         for i in range(len(self.edges)):
                 pygame.draw.line(self.screen,self.BLACK,(self.nodes[self.edges[i][0]][0]+16,self.nodes[self.edges[i][0]][1]+16),(self.nodes[self.edges[i][1]][0]+16,self.nodes[self.edges[i][1]][1]+16),1)
-
+        for i in range(len(self.yellow_edges)):
+            pygame.draw.line(self.screen,self.YELLOW,(self.nodes[self.yellow_edges[i][0]][0]+16,self.nodes[self.yellow_edges[i][0]][1]+16),(self.nodes[self.yellow_edges[i][1]][0]+16,self.nodes[self.yellow_edges[i][1]][1]+16),1)
+    
     def show_buttons(self):
         if(self.state == 'start'):
             self.screen.blit(self.algo_button,(7,550))
             self.screen.blit(self.clear_button,(7+self.algo_button.get_width()/2-53,550+self.algo_button.get_height()/2-13))
-
+            self.screen.blit(self.algo_button,(7,498))
+            self.screen.blit(self.simulation_button,(7+self.algo_button.get_width()/2-20,498+self.algo_button.get_height()/2-13))
+              
     def show_msg(self):
         self.msg_box = self.msg_font.render(self.msg, True, self.BLUE)
         self.screen.blit(self.msg_box,(215,570))
@@ -201,7 +242,6 @@ class Circuit:
                     self.screen.blit(self.add_power_supply,(50,48))
                 if(self.ishovering(5,79,5+self.edge_button.get_width(),79+self.edge_button.get_height())):
                     self.screen.blit(self.add_edge,(50,84))
-
                 if(self.ishovering(5,116,5+self.edge_button_delete.get_width(),116+self.edge_button_delete.get_height())):
                     self.screen.blit(self.delete_edge,(50,120))
 
@@ -240,6 +280,14 @@ class Circuit:
                 self.value_power_supply= self.fuente2.render("Enter power supply name "+"(V)", True, (0,0,0))
                 self.screen.blit(self.value_power_supply,(7,180))
 
+            if self.state == 'simulation_mode':
+                self.temp_node = [self.components[0] for i in range(len(self.components_type))]
+                self.make_equal(self.temp_node,self.components_type)
+                self.start_simulation_mode(self.point)
+                self.make_equal(self.components_type,self.temp_node)
+                self.yellow_edges.clear()
+                self.state = 'start'  
+                self.point = -1
 
             for event in pygame.event.get():
                 pos = pygame.mouse.get_pos()
@@ -265,6 +313,12 @@ class Circuit:
                             elif(self.isClicked(5,116,5+self.edge_button_delete.get_width(),116+self.edge_button_delete.get_height(),pos[0],pos[1])):
                                 self.state = 'delete_edge1'
                                 self.msg = 'Choose initial vertex of the edge.'
+                            
+                            elif(self.isClicked(7,498,7+self.algo_button.get_width(),498+self.algo_button.get_height(),pos[0],pos[1])):
+                                if len(self.nodes) != 0:
+                                    self.state = 'Simulation mode'
+                                    self.msg = 'Start circuit simulation mode'
+                                else: self.state = 'start'
 
                             elif(self.isClicked(7,550,7+self.algo_button.get_width(),550+self.algo_button.get_height(),pos[0],pos[1])):
                                 self.nodes.clear()
@@ -272,7 +326,7 @@ class Circuit:
                                 self.edges.clear()
                                 self.powers.clear()
                                 self.power_supply_color.clear()
-
+                        #Add resistor mode 
                         elif self.state == 'add_node':
                             if(self.isClicked(5,5,5+self.cross.get_width(),5+self.cross.get_height(),pos[0],pos[1])):
                                 self.state = 'start'
@@ -291,27 +345,20 @@ class Circuit:
 
                                     self.resistorName = ""
                                     self.resistorValue = ""
+                                    self.power_supplyName = ""
+                                    self.power_supplyValue = ""
 
                                     self.nodes.append((250,250))
                                     self.components_type.append(self.components[0])
 
                                     self.graph.AgregarVertice(self.resistors_names[-1], int(self.resistors_value[-1]),
                                                               50, False, [250,250])
-
-                                    #self.screen.blit(self.components_type[1])
-
-
-
                         #Add power_supply mode           
                         elif self.state == 'add_power_supply':
                             if(self.isClicked(5,5,5+self.cross.get_width(),5+self.cross.get_height(),pos[0],pos[1])):
                                 self.state = 'start'
                                 self.msg = ''
                             if(self.isClicked(5,250,5+self.add_button.get_width(),250+self.add_button.get_height(),pos[0],pos[1])):
-                                #if pos[0]>200 and pos[1]<550:
-                                    #self.nodes.append((pos[0]-16,pos[1]-16))
-                                    #self.components_type.append(self.components[1])
-
                                 if self.power_supplyName == "" or self.power_supplyValue == "":
                                     print("Incomplete Information")
 
@@ -321,18 +368,18 @@ class Circuit:
                                     
                                     print("Power supply list names: ",self.power_supply_names)
                                     print("Power supply list values: ",self.power_supply_value)
-                                    
-                                    
+                                                                        
                                     self.power_supplyName = ""
-                                    self.power_supplyValue = ""   
-                                    self.screen.blit(self.edge,(300,100))
+                                    self.power_supplyValue = ""
+                                    self.resistorName = ""
+                                    self.resistorValue = ""
 
                                     self.nodes.append((250,250))
                                     self.components_type.append(self.components[1])
 
                                     self.graph.AgregarVertice(self.power_supply_names[-1], int(self.power_supply_value[-1]),
                                                               0, True, [250, 250])
-
+                        #Add edges modes 
                         elif self.state == 'add_edge1':
                             self.pointA = self.getNode(pos[0],pos[1])
                             if(self.pointA != -1):
@@ -355,7 +402,6 @@ class Circuit:
                             if(self.isClicked(5,5,5+self.cross.get_width(),5+self.cross.get_height(),pos[0],pos[1])):
                                 self.state = 'start'
                                 self.msg = ''
-
                         #Delete edges modes
                         elif self.state == 'delete_edge1':
                             self.pointA = self.getNode(pos[0],pos[1]) 
@@ -378,8 +424,17 @@ class Circuit:
                             if(self.isClicked(5,5,5+self.cross.get_width(),5+self.cross.get_height(),pos[0],pos[1])):
                                 self.state = 'start'
                                 self.msg = ''
+                        #Simulation mode 
+                        elif self.state == 'Simulation mode':
+                            self.point  = self.getNode(pos[0],pos[1])
+                            if self.point != -1:
+                                self.state = 'simulation_mode'
+                                self.msg = ''
+                        #Exit mode      
                         elif self.state == 'exit':
                             if(self.isClicked(5,5,5+self.node_button.get_width(),5+self.node_button.get_height(),pos[0],pos[1])):
+                                self.make_equal(self.components_type,self.temp_node)
+                                self.yellow_edges.clear()
                                 self.state = 'start'
                                 self.msg = ''
                     self.pos = (-1,-1)
@@ -425,7 +480,7 @@ class Circuit:
                         powerSupplyVlueInfo = self.fuente2.render(self.power_supplyValue, True, (0,0,0))
                         self.screen.blit(powerSupplyNameInfo,(PositionMenu[0],PositionMenu[1]))
                         self.screen.blit(powerSupplyVlueInfo,(PositionMenu[0],PositionMenu[1]+20))
-
+                #Components movement
                 if event.type == pg.MOUSEMOTION:
                     if event.buttons[0]:
 
@@ -447,5 +502,3 @@ class Circuit:
             self.show_powers()
             pygame.display.update()
             #self.clock.tick(60)
-
-
