@@ -24,9 +24,15 @@ class Circuit:
     inputRectValue = pygame.Rect(7,200,82,22) 
 
     #Components images
-    node2 = pygame.image.load(r'Images\resistor1.png')
-    #node2.set_colorkey([255,255,255])
-    power_supply1 = pygame.image.load(r'Images\power.png')
+    node2 = pygame.image.load(r'Images\resistor.png')
+    node2.set_colorkey([255,255,255])
+    b_resistor = pygame.image.load(r'Images\resistor_b.png')
+    b_resistor.set_colorkey([255,255,255])
+
+    power_supply1 = pygame.image.load(r'Images\powersupply.png')
+    power_supply1.set_colorkey([255,255,255])
+    y_power_supply = pygame.image.load(r'Images\y_powersupply.png')
+    y_power_supply.set_colorkey([255,255,255])
 
     #Buttons images
     r_resistor = pygame.image.load(r'Images\r_resistor.png')
@@ -35,6 +41,8 @@ class Circuit:
     edge_delete = pygame.image.load(r'Images\plus.png')
     power_supply = pygame.image.load(r'Images\power.png')
     power_supply.set_colorkey([255,255,255])
+    
+    
     cross = pygame.image.load(r'Images\cross.png')
     algo_button = pygame.image.load(r'Images\algo_button.png')
     add_button = pygame.image.load(r'Images\add_edges.png')
@@ -76,7 +84,7 @@ class Circuit:
     nodes = []
     edges= []
     powers = []
-    components = [node2, power_supply1]
+    components = [node2, power_supply1, b_resistor, y_power_supply]
     components_type = []
     yellow_edges = []
 
@@ -130,15 +138,15 @@ class Circuit:
     def simulation_mode(self,s,vis,adj):
         vis[s] = 1
         if self.components_type[s] == self.components[1]:
-            self.components_type[s] = self.components[0]
+            self.components_type[s] = self.components[3]
         else:
             if self.components_type[s] == self.components[0]:
-                self.components_type[s] = self.components[1]
+                self.components_type[s] = self.components[2]
             
         self.show_edges()
         self.show_nodes()
         pygame.display.update()
-        pygame.time.delay(500)
+        pygame.time.delay(200)
         for i in range(len(adj[s])):
             if vis[adj[s][i]] != 1:
                 self.yellow_edges.append((s,adj[s][i]))
@@ -146,7 +154,7 @@ class Circuit:
                 self.show_edges()
                 self.show_nodes()
                 pygame.display.update()
-                pygame.time.delay(200)
+                pygame.time.delay(400)
                 self.simulation_mode(adj[s][i],vis,adj)
 
     def start_simulation_mode(self,point):
@@ -427,9 +435,8 @@ class Circuit:
                         #Simulation mode 
                         elif self.state == 'Simulation mode':
                             self.point  = self.getNode(pos[0],pos[1])
-                            if self.point != -1:
-                                self.state = 'simulation_mode'
-                                self.msg = ''
+                            self.state = 'simulation_mode'
+                            self.msg = ''
                         #Exit mode      
                         elif self.state == 'exit':
                             if(self.isClicked(5,5,5+self.node_button.get_width(),5+self.node_button.get_height(),pos[0],pos[1])):
@@ -502,3 +509,4 @@ class Circuit:
             self.show_powers()
             pygame.display.update()
             #self.clock.tick(60)
+
