@@ -198,7 +198,20 @@ class Circuit:
 
     def show_edges(self):
         for i in range(len(self.edges)):
-                pygame.draw.line(self.screen,self.BLACK,(self.nodes[self.edges[i][0]][0]+16,self.nodes[self.edges[i][0]][1]+16),(self.nodes[self.edges[i][1]][0]+16,self.nodes[self.edges[i][1]][1]+16),1)
+
+
+            if self.components_type[self.edges[i][0]] == self.components[0] and self.components_type[self.edges[i][1]] == self.components[0]:
+
+                pygame.draw.line(self.screen,self.BLACK,(self.nodes[self.edges[i][0]][0]+50,self.nodes[self.edges[i][0]][1]+6),(self.nodes[self.edges[i][1]][0],self.nodes[self.edges[i][1]][1]+6),1)
+
+            elif self.components_type[self.edges[i][0]] == self.components[1] and self.components_type[self.edges[i][1]] == self.components[0]:
+
+                pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0] + 20, self.nodes[self.edges[i][0]][1]),(self.nodes[self.edges[i][1]][0], self.nodes[self.edges[i][1]][1] + 6), 1)
+
+            elif self.components_type[self.edges[i][0]] == self.components[0] and self.components_type[self.edges[i][1]] == self.components[1]:
+
+                pygame.draw.line(self.screen,self.BLACK,(self.nodes[self.edges[i][0]][0]+50,self.nodes[self.edges[i][0]][1]+6),(self.nodes[self.edges[i][1]][0]+20,self.nodes[self.edges[i][1]][1]+38),1)
+
         for i in range(len(self.yellow_edges)):
             pygame.draw.line(self.screen,self.YELLOW,(self.nodes[self.yellow_edges[i][0]][0]+16,self.nodes[self.yellow_edges[i][0]][1]+16),(self.nodes[self.yellow_edges[i][1]][0]+16,self.nodes[self.yellow_edges[i][1]][1]+16),1)
     
@@ -401,7 +414,7 @@ class Circuit:
                             self.pointB = self.getNode(pos[0],pos[1])
                             if self.pointB != -1 and self.pointB != self.pointA:
                                 self.edges.append((self.pointA,self.pointB))
-                                self.edges.append((self.pointB,self.pointA))
+                                #self.edges.append((self.pointB,self.pointA))
                                 self.graph.AgregarArista(self.pointA,self.pointB,0)
                                 self.state = 'add_edge1'
                                 self.msg = 'Choose initial vertex of the edge.'
