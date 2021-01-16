@@ -13,29 +13,10 @@ class SimWin:
     YELLOW = (255, 255, 0)
     BLUE = (0, 0, 255)
 
-    # Components images
-    node2 = pygame.image.load(r'Images\resistor.png')
-    node2.set_colorkey([255, 255, 255])
-    b_resistor = pygame.image.load(r'Images\resistor1.png')
-    b_resistor.set_colorkey([255, 255, 255])
-
-    power_supply1 = pygame.image.load(r'Images\powersupply.png')
-    power_supply1.set_colorkey([255, 255, 255])
-    y_power_supply = pygame.image.load(r'Images\y_powersupply.png')
-    y_power_supply.set_colorkey([255, 255, 255])
-
-    # Buttons images
-    r_resistor = pygame.image.load(r'Images\r_resistor.png')
-    r_resistor.set_colorkey([255, 255, 255])
-    edge = pygame.image.load(r'Images\add_edges.png')
-    edge_delete = pygame.image.load(r'Images\plus.png')
-    power_supply = pygame.image.load(r'Images\power.png')
-    power_supply.set_colorkey([255, 255, 255])
-
     nodes = []
     edges = []
     powers = []
-    components = [node2, power_supply1, b_resistor, y_power_supply]
+    components = []
     components_type = []
     yellow_edges = []
 
@@ -69,21 +50,19 @@ class SimWin:
             self.screen.blit(self.power_supply_color[i], self.powers[i])
 
     def show_edges(self):
-        print(self.edges)
-        print(self.components_type)
-        print(self.components)
+
         for i in range(len(self.edges)):
 
             if self.components_type[self.edges[i][0]] == self.components[0] and self.components_type[self.edges[i][1]] == self.components[0]:
-                print('if 1')
+
                 pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0] + 50, self.nodes[self.edges[i][0]][1] + 6),(self.nodes[self.edges[i][1]][0], self.nodes[self.edges[i][1]][1] + 6), 1)
 
             elif self.components_type[self.edges[i][0]] == self.components[1] and self.components_type[self.edges[i][1]] == self.components[0]:
-                print('if 2')
+
                 pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0] + 20, self.nodes[self.edges[i][0]][1]),(self.nodes[self.edges[i][1]][0], self.nodes[self.edges[i][1]][1] + 6), 1)
 
             elif self.components_type[self.edges[i][0]] == self.components[0] and self.components_type[self.edges[i][1]] == self.components[1]:
-                print('if 3')
+
                 pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0] + 50, self.nodes[self.edges[i][0]][1] + 6),(self.nodes[self.edges[i][1]][0] + 20, self.nodes[self.edges[i][1]][1] + 38), 1)
 
         for i in range(len(self.yellow_edges)):

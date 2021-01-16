@@ -37,5 +37,9 @@ def Read():
             
 """
 
-def Write(vertices):
+def Write(graph, nodes, powers, edges):
     data = {}
+    for node in graph:
+        data['graph'].append({
+
+        })
