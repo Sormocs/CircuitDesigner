@@ -44,7 +44,7 @@ def Simulation():
     circuit = Circuit()
     simulation = SimWin()
     simulation.SetScreen(screen)
-    simulation.SetComponents(circuit.GetNodes(), circuit.GetEdges(), circuit.GetPowers(), circuit.GetGraph(), circuit.GetComponentsType(), circuit.GetYellowEdges())
+    simulation.SetComponents(circuit.GetNodes(), circuit.GetEdges(), circuit.GetPowers(), circuit.GetGraph(), circuit.GetComponentsType(), circuit.GetYellowEdges(),circuit.Getcomponents())
     simulation.RunWin()
     DesignWin()
 

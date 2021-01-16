@@ -129,6 +129,9 @@ class Circuit:
     def GetYellowEdges(self):
         return self.yellow_edges
 
+    def Getcomponents(self):
+        return self.components
+
     def isClicked(self,x1,y1,x2,y2,mos_x,mos_y):
         if mos_x>x1 and (mos_x<x2):
             x_inside = True
@@ -218,6 +221,7 @@ class Circuit:
     def show_edges(self):
         print(str(self.edges) + 'DESIGN')
         print(str(self.components_type) + 'DESIGN')
+        print(str(self.components) + 'DESIGN')
         for i in range(len(self.edges)):
 
 

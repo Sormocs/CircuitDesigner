@@ -14,7 +14,7 @@ class SimWin:
     BLUE = (0, 0, 255)
 
     # Components images
-    node2 = pygame.image.load(r'Images\r_resistor.png')
+    node2 = pygame.image.load(r'Images\resistor.png')
     node2.set_colorkey([255, 255, 255])
     b_resistor = pygame.image.load(r'Images\resistor1.png')
     b_resistor.set_colorkey([255, 255, 255])
@@ -71,6 +71,7 @@ class SimWin:
     def show_edges(self):
         print(self.edges)
         print(self.components_type)
+        print(self.components)
         for i in range(len(self.edges)):
 
             if self.components_type[self.edges[i][0]] == self.components[0] and self.components_type[self.edges[i][1]] == self.components[0]:
@@ -91,13 +92,14 @@ class SimWin:
     def SetScreen(self,sc):
         self.screen = sc
 
-    def SetComponents(self,nodes, edges, powers, graph,components_type,yellow_edges):
+    def SetComponents(self,nodes, edges, powers, graph,components_type,yellow_edges,com):
         self.nodes = nodes
         self.edges = edges
         self.powers = powers
         self.graph = graph
         self.components_type = components_type
         self.yellow_edges = yellow_edges
+        self.components = com
 
     def RunWin(self):
         run = True
