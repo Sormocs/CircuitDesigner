@@ -1,4 +1,5 @@
-#Circuit Design 
+#Circuit Design
+from Simulation import SimWin
 import pygame
 import pygame as pg
 import sys
@@ -26,7 +27,7 @@ class Circuit:
     #Components images
     node2 = pygame.image.load(r'Images\resistor.png')
     node2.set_colorkey([255,255,255])
-    b_resistor = pygame.image.load(r'Images\resistor_b.png')
+    b_resistor = pygame.image.load(r'Images\resistor1.png')
     b_resistor.set_colorkey([255,255,255])
 
     power_supply1 = pygame.image.load(r'Images\powersupply.png')
@@ -58,7 +59,7 @@ class Circuit:
     end_desing = button_font.render('End Desing', True, BLACK)
     simulation_button = button_font.render('Simulate', True, WHITE) 
     clear_button = button_font.render('Clear Screen', True, WHITE) 
-    msg_box = msg_font.render('', True, BLUE);
+    msg_box = msg_font.render('', True, BLUE)
 
     #Button creator
     node_button = r_resistor
@@ -109,6 +110,24 @@ class Circuit:
         if Circuit.__instance is None:
             Circuit.__instance = object.__new__(cls)
         return Circuit.__instance
+
+    def GetNodes(self):
+        return self.nodes
+
+    def GetEdges(self):
+        return self.edges
+
+    def GetPowers(self):
+        return self.powers
+
+    def GetComponentsType(self):
+        return self.components_type
+
+    def GetGraph(self):
+        return self.graph
+
+    def GetYellowEdges(self):
+        return self.yellow_edges
 
     def isClicked(self,x1,y1,x2,y2,mos_x,mos_y):
         if mos_x>x1 and (mos_x<x2):
@@ -197,6 +216,8 @@ class Circuit:
             self.screen.blit(self.power_supply_color[i],self.powers[i])
 
     def show_edges(self):
+        print(str(self.edges) + 'DESIGN')
+        print(str(self.components_type) + 'DESIGN')
         for i in range(len(self.edges)):
 
 
@@ -226,9 +247,16 @@ class Circuit:
         self.msg_box = self.msg_font.render(self.msg, True, self.BLUE)
         self.screen.blit(self.msg_box,(215,570))
 
+    def SetComponents(self,nodes, edges, powers, graph,components_type,yellow_edges):
+        self.nodes = nodes
+        self.edges = edges
+        self.powers = powers
+        self.graph = graph
+        self.components_type = components_type
+        self.yellow_edges = yellow_edges
+
     def RunWin(self,sc):
         self.screen = sc
-        print(self.screen)
         running = True
         while running:
             self.screen.fill(self.WHITE)
@@ -337,8 +365,15 @@ class Circuit:
                             
                             elif(self.isClicked(7,498,7+self.algo_button.get_width(),498+self.algo_button.get_height(),pos[0],pos[1])):
                                 if len(self.nodes) != 0:
-                                    self.state = 'Simulation mode'
-                                    self.msg = 'Start circuit simulation mode'
+                                    running = False
+                                    self.state = 'start'
+                                    return
+                                    # simulation = SimWin()
+                                    # simulation.SetScreen(self.screen)
+                                    # simulation.SetComponents(self.nodes, self.edges, self.powers, self.graph,self.components_type,self.yellow_edges)
+                                    # simulation.RunWin()
+                                    # self.state = 'Simulation mode'
+                                    # self.msg = 'Start circuit simulation mode'
                                 else: self.state = 'start'
 
                             elif(self.isClicked(7,550,7+self.algo_button.get_width(),550+self.algo_button.get_height(),pos[0],pos[1])):
@@ -446,10 +481,10 @@ class Circuit:
                                 self.state = 'start'
                                 self.msg = ''
                         #Simulation mode 
-                        elif self.state == 'Simulation mode':
-                            self.point  = self.getNode(pos[0],pos[1])
-                            self.state = 'simulation_mode'
-                            self.msg = ''
+                        # elif self.state == 'Simulation mode':
+                        #     self.point  = self.getNode(pos[0],pos[1])
+                        #     self.state = 'simulation_mode'
+                        #     self.msg = ''
                         #Exit mode      
                         elif self.state == 'exit':
                             if(self.isClicked(5,5,5+self.node_button.get_width(),5+self.node_button.get_height(),pos[0],pos[1])):
