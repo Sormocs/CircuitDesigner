@@ -4,7 +4,14 @@ class Grafo:
 
     def __init__(self):
         self.vertices = {}
+        self.aristas = []
         self.id = 1
+
+    def GetVertices(self):
+        return self.vertices
+
+    def GetAristas(self):
+        return self.aristas
 
     def AgregarVertice(self,n,v,a,t,c):
 
@@ -14,6 +21,7 @@ class Grafo:
     def AgregarArista(self, inicio, fin, valor):
 
         if inicio in self.vertices and fin in self.vertices:
+            self.aristas.append([inicio,fin,valor])
             self.vertices[inicio].AgregarVecino(fin, valor)
             #self.vertices[fin].AgregarVecino(inicio, volts)
 
@@ -174,3 +182,20 @@ class Grafo:
             lista.append(self.vertices[i])
 
         return  lista
+
+    def Show(self):
+        vertices = self.GenerarLista()
+        print("~~~~~~~~~~~~~~")
+        for v in vertices:
+            print(v.GetName())
+            print(v.GetPos())
+
+        print("~~~~~~~~~~~~~~")
+
+        for e in self.aristas:
+            print("Aristas:")
+            print(e[0])
+            print(e[1])
+            print(e[2])
+
+        print("~~~~~~~~~~~~~~")

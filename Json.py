@@ -1,7 +1,49 @@
+from Grafo import Grafo
 import json
 
+def Write(graph):
+    nodes = graph.GetVertices()
+    edges = graph.GetAristas()
+    data = {}
+    data['vertices'] = []
+    data['edges'] = []
+    i = 1
+    for v in nodes:
+        data['vertices'].append({
+            'name': nodes[i].GetName(),
+            'v': str(nodes[i].GetV()),
+            't':str(nodes[i].GetT()),
+            'a':str(nodes[i].GetA()),
+            'posx':str(nodes[i].GetPos()[0]),
+            'posy':str(nodes[i].GetPos()[1])
+        })
+        i += 1
+    for e in edges:
+        data['edges'].append({
+            'inicio':e[0],
+            'fin':e[1],
+            'valor':e[2]
+        })
+
+    with open('graph.json','w') as file:
+        json.dump(data,file)
+
+def Read():
+    with open('graph.json') as json_file:
+        graph = json.load(json_file)
+        new_graph = Grafo()
+        for v in graph['vertices']:
+            if v['t'] == "True":
+                new_graph.AgregarVertice(v['name'],int(v['v']),int(v['a']),True,[int(v['posx']),int(v['posy'])])
+            else:
+                new_graph.AgregarVertice(v['name'], int(v['v']), int(v['a']), False, [int(v['posx']),int(v['posy'])])
+
+        for a in graph['edges']:
+            new_graph.AgregarArista(a['inicio'],a['fin'],a['valor'])
+        return new_graph
+
 """
-def Write():
+def WriteEx():
     data = {}
     data['people'] = []
     data['people'].append({
@@ -26,7 +68,7 @@ def Write():
         json.dump(data,outfile)
 
 
-def Read():
+def ReadEx():
     with open('data.json') as json_file:
         data = json.load(json_file)
         for p in data['people']:
@@ -34,12 +76,4 @@ def Read():
             print("Age: " + p['age'])
             print("From: " + p['from'])
             print('')
-            
 """
-
-def Write(graph, nodes, powers, edges):
-    data = {}
-    for node in graph:
-        data['graph'].append({
-
-        })

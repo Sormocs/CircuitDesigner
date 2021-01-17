@@ -81,6 +81,7 @@ class SimWin:
         self.components = com
 
     def RunWin(self):
+        print(str(self.graph.GetVertices()[1].GetT()))
         run = True
         # BOTON: color boton, posicion x, posicion y, ancho, altura, tamano de letra, texto, color texto
         edit_again = Button(self.LIME_GREEN,20,500,150,70,24,"Back to design",self.WHITE)
