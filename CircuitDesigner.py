@@ -24,19 +24,31 @@ class Circuit:
     inputRectName = pygame.Rect(7,150,112,22)
     inputRectValue = pygame.Rect(7,200,82,22) 
 
-    #Components images
-    node2 = pygame.image.load(r'Images\resistor.png')
+    
+    #Resistor positions images
+    node2 = pygame.image.load(r'Images\resistorH.png')
     node2.set_colorkey([255,255,255])
-    node3 = pygame.image.load(r'Images\resistor.png')
-    node3.set_colorkey([255,255,255])
-    b_resistor = pygame.image.load(r'Images\resistor1.png')
-    b_resistor.set_colorkey([255,255,255])
+    node4 = pygame.image.load(r'Images\resistorV.png')
+    node4.set_colorkey([255,255,255])
 
-    power_supply1 = pygame.image.load(r'Images\powersupply.png')
+    #Power supply positions images
+    power_supply1 = pygame.image.load(r'Images\powersupplyV.png')
     power_supply1.set_colorkey([255,255,255])
-    y_power_supply = pygame.image.load(r'Images\y_powersupply.png')
-    y_power_supply.set_colorkey([255,255,255])
+    power_supply2 = pygame.image.load(r'Images\powersupplyH.png')
+    power_supply2.set_colorkey([255,255,255])
 
+    #Resistor positions images simulation
+    b_resistor = pygame.image.load(r'Images\resistor_bH.png')
+    b_resistor.set_colorkey([255,255,255])
+    b_resistorV = pygame.image.load(r'Images\resistor_bV.png')
+    b_resistorV.set_colorkey([255,255,255])
+
+    #Power supply positions images simulation
+    y_power_supply = pygame.image.load(r'Images\y_powersupplyV.png')
+    y_power_supply.set_colorkey([255,255,255])
+    y_power_supplyH = pygame.image.load(r'Images\y_powersupplyH.png')
+    y_power_supplyH.set_colorkey([255,255,255])
+    
     #Buttons images
     r_resistor = pygame.image.load(r'Images\r_resistor.png')
     r_resistor.set_colorkey([255,255,255])
@@ -44,8 +56,6 @@ class Circuit:
     edge_delete = pygame.image.load(r'Images\plus.png')
     power_supply = pygame.image.load(r'Images\power.png')
     power_supply.set_colorkey([255,255,255])
-    
-    
     cross = pygame.image.load(r'Images\cross.png')
     algo_button = pygame.image.load(r'Images\algo_button.png')
     add_button = pygame.image.load(r'Images\add_edges.png')
@@ -87,7 +97,7 @@ class Circuit:
     nodes = []
     edges= []
     powers = []
-    components = [node2, power_supply1, b_resistor, y_power_supply,node3]
+    components = [node2, power_supply1, b_resistor, y_power_supply, node3, node4, power_supply2, b_resistorV, y_power_supplyH]
     components_type = []
     yellow_edges = []
 
