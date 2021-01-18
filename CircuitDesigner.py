@@ -27,6 +27,8 @@ class Circuit:
     #Components images
     node2 = pygame.image.load(r'Images\resistor.png')
     node2.set_colorkey([255,255,255])
+    node3 = pygame.image.load(r'Images\resistor.png')
+    node3.set_colorkey([255,255,255])
     b_resistor = pygame.image.load(r'Images\resistor1.png')
     b_resistor.set_colorkey([255,255,255])
 
@@ -85,7 +87,7 @@ class Circuit:
     nodes = []
     edges= []
     powers = []
-    components = [node2, power_supply1, b_resistor, y_power_supply]
+    components = [node2, power_supply1, b_resistor, y_power_supply,node3]
     components_type = []
     yellow_edges = []
 
@@ -223,18 +225,49 @@ class Circuit:
 
         for i in range(len(self.edges)):
 
-
             if self.components_type[self.edges[i][0]] == self.components[0] and self.components_type[self.edges[i][1]] == self.components[0]:
 
-                pygame.draw.line(self.screen,self.BLACK,(self.nodes[self.edges[i][0]][0]+50,self.nodes[self.edges[i][0]][1]+6),(self.nodes[self.edges[i][1]][0],self.nodes[self.edges[i][1]][1]+6),1)
+                pygame.draw.line(self.screen,self.BLACK,(self.nodes[self.edges[i][0]][0]+50,self.nodes[self.edges[i][0]][1]+6),(self.nodes[self.edges[i][0]][0]+50,self.nodes[self.edges[i][1]][1]+6),1)
+                pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0]+50,self.nodes[self.edges[i][1]][1]+6),(self.nodes[self.edges[i][1]][0], self.nodes[self.edges[i][1]][1] + 6), 1)
+
+                if self.nodes[self.edges[i][0]][0]+50 > self.nodes[self.edges[i][1]][0]:
+
+                    i = self.getNode(self.nodes[self.edges[i][1]][0]+10, self.nodes[self.edges[i][1]][1]+5)
+                    self.components_type[i] = self.components[4]
+
+            elif self.components_type[self.edges[i][0]] == self.components[0] and self.components_type[self.edges[i][1]] == self.components[4]:
+
+                pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0] + 50, self.nodes[self.edges[i][0]][1] + 6),(self.nodes[self.edges[i][0]][0] + 100, self.nodes[self.edges[i][0]][1] + 6), 1)
+                pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0] + 100, self.nodes[self.edges[i][0]][1] + 6),(self.nodes[self.edges[i][0]][0] + 100, self.nodes[self.edges[i][1]][1] + 6), 1)
+                pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0] + 100, self.nodes[self.edges[i][1]][1] + 6),(self.nodes[self.edges[i][1]][0]+50, self.nodes[self.edges[i][1]][1] + 6), 1)
+
+                if self.nodes[self.edges[i][0]][0]+50 < self.nodes[self.edges[i][1]][0]:
+
+                    i = self.getNode(self.nodes[self.edges[i][1]][0]+10, self.nodes[self.edges[i][1]][1]+5)
+                    self.components_type[i] = self.components[0]
 
             elif self.components_type[self.edges[i][0]] == self.components[1] and self.components_type[self.edges[i][1]] == self.components[0]:
 
-                pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0] + 20, self.nodes[self.edges[i][0]][1]),(self.nodes[self.edges[i][1]][0], self.nodes[self.edges[i][1]][1] + 6), 1)
+                pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0] + 20, self.nodes[self.edges[i][0]][1]),(self.nodes[self.edges[i][0]][0] + 20, self.nodes[self.edges[i][1]][1] + 6), 1)
+                pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0] + 20, self.nodes[self.edges[i][1]][1] + 6),(self.nodes[self.edges[i][1]][0], self.nodes[self.edges[i][1]][1] + 6), 1)
 
             elif self.components_type[self.edges[i][0]] == self.components[0] and self.components_type[self.edges[i][1]] == self.components[1]:
 
-                pygame.draw.line(self.screen,self.BLACK,(self.nodes[self.edges[i][0]][0]+50,self.nodes[self.edges[i][0]][1]+6),(self.nodes[self.edges[i][1]][0]+20,self.nodes[self.edges[i][1]][1]+38),1)
+                pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0]+50,self.nodes[self.edges[i][0]][1]+6),(self.nodes[self.edges[i][0]][0]+50,self.nodes[self.edges[i][1]][1]+55),1)
+                pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0]+50,self.nodes[self.edges[i][1]][1]+55),(self.nodes[self.edges[i][1]][0] + 20, self.nodes[self.edges[i][1]][1] + 55), 1)
+                pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][1]][0] + 20, self.nodes[self.edges[i][1]][1] + 55),(self.nodes[self.edges[i][1]][0] + 20, self.nodes[self.edges[i][1]][1] + 38), 1)
+
+            elif self.components_type[self.edges[i][0]] == self.components[4] and self.components_type[self.edges[i][1]] == self.components[1]:
+
+                pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0], self.nodes[self.edges[i][0]][1] + 6),(self.nodes[self.edges[i][0]][0], self.nodes[self.edges[i][1]][1] + 55), 1)
+                pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0], self.nodes[self.edges[i][1]][1] + 55),(self.nodes[self.edges[i][1]][0] + 20, self.nodes[self.edges[i][1]][1] + 55), 1)
+                pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][1]][0] + 20, self.nodes[self.edges[i][1]][1] + 55),(self.nodes[self.edges[i][1]][0] + 20, self.nodes[self.edges[i][1]][1] + 38), 1)
+
+            elif self.components_type[self.edges[i][0]] == self.components[4] and self.components_type[self.edges[i][1]] == self.components[0]:
+
+                pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0], self.nodes[self.edges[i][0]][1] + 6),(self.nodes[self.edges[i][0]][0]-50, self.nodes[self.edges[i][0]][1] + 6), 1)
+                pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0]-50, self.nodes[self.edges[i][0]][1] + 6),(self.nodes[self.edges[i][0]][0]-50, self.nodes[self.edges[i][1]][1] + 6), 1)
+                pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0]-50, self.nodes[self.edges[i][1]][1] + 6),(self.nodes[self.edges[i][1]][0], self.nodes[self.edges[i][1]][1] + 6), 1)
 
         for i in range(len(self.yellow_edges)):
             pygame.draw.line(self.screen,self.YELLOW,(self.nodes[self.yellow_edges[i][0]][0]+16,self.nodes[self.yellow_edges[i][0]][1]+16),(self.nodes[self.yellow_edges[i][1]][0]+16,self.nodes[self.yellow_edges[i][1]][1]+16),1)
