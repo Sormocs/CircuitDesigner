@@ -159,7 +159,7 @@ class Grafo:
 
             for i in self.vertices:
                 if i != vertice:
-                    self.vertices[i].distancia = float('inf')
+                    self.vertices[i].distancia = 0
 
                 self.vertices[i].padre = None
                 noVisitados.append(i)
@@ -168,7 +168,7 @@ class Grafo:
 
                 for vecino in self.vertices[actual].vecinos:
                     if self.vertices[vecino[0]].visitado == False:
-                        if self.vertices[actual].distancia + vecino[1] < self.vertices[vecino[0]].distancia:
+                        if self.vertices[actual].distancia + vecino[1] > self.vertices[vecino[0]].distancia:
                             self.vertices[vecino[0]].distancia = self.vertices[actual].distancia + vecino[1]
                             self.vertices[vecino[0]].padre = actual
 
