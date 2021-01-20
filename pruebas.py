@@ -36,9 +36,9 @@ print(a)
 # g.Eliminar("dad1")
 # print(g.vertices)
 #
-# g.DikjstraMaximo(1)
-# print("El camino maximo seria "  + str(g.Camino(1,6)))
-# g.DikjstraMinimo(1)
-# print("el camino minimo seria " + str(g.Camino(1,6)))
+g.DikjstraMaximo(1)
+print("El camino maximo seria "  + str(g.Camino(1,6)))
+g.DikjstraMinimo(1)
+print("el camino minimo seria " + str(g.Camino(1,6)))
 
 

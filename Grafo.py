@@ -59,7 +59,7 @@ class Grafo:
             if i[0] == id1 and i[1] == id2:
                 self.aristas.remove(i)
 
-        for i in self.vertices[id1].vecinos:
+        for j in self.vertices[id1].vecinos:
             if j[0] == id2:
                 self.vertices[id1].vecinos.remove(j)
 
@@ -186,6 +186,12 @@ class Grafo:
 
         self.vertices[i].nombre = n
         self.vertices[i].volts = v
+
+    def Resetear(self):
+
+        self.vertices = {}
+        self.aristas = []
+        self.id = 1
 
 
     def GenerarLista(self):
