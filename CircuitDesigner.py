@@ -676,6 +676,7 @@ class Circuit:
                             self.pointB = self.getNode(pos[0],pos[1])
                             if self.pointB != -1 and self.pointB != self.pointA:
                                 self.edges.append((self.pointA,self.pointB))
+                                print(self.pointB,self.pointA)
                                 #self.edges.append((self.pointB,self.pointA))
                                 self.graph.AgregarArista(self.pointA,self.pointB,0)
                                 self.state = 'add_edge1'
@@ -699,7 +700,8 @@ class Circuit:
                             self.pointB = self.getNode(pos[0],pos[1])
                             if self.pointB != -1 and self.pointB != self.pointA:
                                 self.edges.remove((self.pointA,self.pointB))
-                                self.edges.remove((self.pointB,self.pointA))
+                                #self.edges.remove((self.pointB,self.pointA))
+                                self.graph.EliminarAristaEspecifica(self.pointA,self.pointB)
                                 self.state = 'delete_edge1'
                                 self.msg = 'Choose initial vertex of the edge.'
                                 self.pointA = -1

@@ -36,9 +36,9 @@ class Grafo:
         #cambiar
         id = self.BuscarID(nombre)
         del(self.vertices[id])
-        self.EliminarArita(id)
+        self.EliminarArista(id)
 
-    def EliminarArita(self, id):
+    def EliminarArista(self, id):
 
         for i in self.vertices:
             for j in self.vertices[i].vecinos:
@@ -48,6 +48,20 @@ class Grafo:
         for i in self.vertices:
             if self.vertices[i].padre == id:
                 self.vertices[i].padre = None
+
+        for i in self.aristas:
+            if i[0] == id:
+                self.aristas.remove(i)
+
+
+    def EliminarAristaEspecifica(self, id1, id2):
+        for i in self.aristas:
+            if i[0] == id1 and i[1] == id2:
+                self.aristas.remove(i)
+
+        for i in self.vertices[id1].vecinos:
+            if j[0] == id2:
+                self.vertices[id1].vecinos.remove(j)
 
     def CambiarValorArista(self, id,valor):
 
@@ -172,6 +186,7 @@ class Grafo:
 
         self.vertices[i].nombre = n
         self.vertices[i].volts = v
+
 
     def GenerarLista(self):
 

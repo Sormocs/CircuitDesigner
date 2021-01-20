@@ -24,6 +24,15 @@ print(new_graph.vertices)
 g.Show()
 new_graph.Show()
 
+a = [1,2,3,4,5,6,7,8,9]
+
+for i in a:
+
+    if i == 3:
+        a.remove(i)
+
+print(a)
+
 # g.Eliminar("dad1")
 # print(g.vertices)
 #
