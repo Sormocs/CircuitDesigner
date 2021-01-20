@@ -656,9 +656,9 @@ class Circuit:
                                     self.power_supplyValue = ""
                                     self.resistorName = ""
                                     self.resistorValue = ""
-
-                                    self.nodes.append((250,250))
-                                    self.components_type.append(self.components[1])
+                                    
+                                    self.nodes.insert(0,(250,250))
+                                    self.components_type.insert(0, self.components[1])
 
                                     self.graph.AgregarVertice(self.power_supply_names[-1], int(self.power_supply_value[-1]),
                                                               0, True, [250, 250])
