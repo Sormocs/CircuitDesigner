@@ -65,7 +65,9 @@ class Circuit:
     add_button = pygame.image.load(r'Images\add_edges.png')
     button_font = pygame.font.Font('roboto.ttf', 20)
     msg_font = pygame.font.Font('roboto.ttf', 15)
-    fuente2 = pygame.font.Font(None,23)
+    valuesFont = pygame.font.Font('roboto.ttf', 13)
+    letterFont = pygame.font.Font(None,23)
+    
 
     #Buttons states
     add_node = button_font.render('Add Resistor', True, BLACK)
@@ -224,6 +226,20 @@ class Circuit:
         for i in range(len(self.nodes)):
             self.screen.blit(self.components_type[i],self.nodes[i])
 
+        for i in range(len(self.resistors_names)):
+            self.resistorV = self.valuesFont.render(self.resistors_value[i] +"\u03A9", False, (0,0,0))
+            self.resistorN = self.valuesFont.render(self.resistors_names[i], False, (0,0,0))
+            self.screen.blit(self.resistorN, (self.nodes[i][0],self.nodes[i][1]-20))
+            self.screen.blit(self.resistorV,(self.nodes[i][0]+20,self.nodes[i][1]-20))
+  
+        #Escribe los valores en una posición anterior
+        '''
+        for i in range(len(self.power_supply_names)):
+            self.powersupplyV = self.valuesFont.render(self.power_supply_value[i] +"V", False, (0,0,0))
+            self.powersupplyN = self.valuesFont.render(self.power_supply_names[i], False, (0,0,0))
+            self.screen.blit(self.powersupplyN, (self.nodes[i][0],self.nodes[i][1]-20))
+            self.screen.blit(self.powersupplyV, (self.nodes[i][0]+20,self.nodes[i][1]-20))
+        '''
     def getPowers(self,mos_x,mos_y):
         for i in range(len(self.powers)):
             self.x1 = self.powers[i][0]
@@ -527,15 +543,15 @@ class Circuit:
                     self.screen.blit(self.end_desing,(50,12))
                 
                 pygame.draw.rect(self.screen,self.color,self.inputRectName)
-                self.textSurface = self.fuente2.render(self.resistorName,True,(0,0,0))
+                self.textSurface = self.letterFont.render(self.resistorName,True,(0,0,0))
                 self.screen.blit(self.textSurface,self.inputRectName)
-                self.name_resistor = self.fuente2.render("Enter resistor name", True, (0,0,0))
+                self.name_resistor = self.letterFont.render("Enter resistor name", True, (0,0,0))
                 self.screen.blit(self.name_resistor,(7,120))
 
                 pygame.draw.rect(self.screen,self.color,self.inputRectValue)
-                self.textSurface2 = self.fuente2.render(self.resistorValue,True,(0,0,0))
+                self.textSurface2 = self.letterFont.render(self.resistorValue,True,(0,0,0))
                 self.screen.blit(self.textSurface2,self.inputRectValue)
-                self.value_resistor= self.fuente2.render(("Enter resistor value "+"(\u03A9)"), True, (0,0,0))
+                self.value_resistor= self.letterFont.render(("Enter resistor value "+"(\u03A9)"), True, (0,0,0))
                 self.screen.blit(self.value_resistor,(7,180))
                 
             if self.state == 'add_power_supply':
@@ -544,16 +560,16 @@ class Circuit:
                     self.screen.blit(self.end_desing,(50,12))
 
                 pygame.draw.rect(self.screen,self.color,self.inputRectName)
-                self.textSurface = self.fuente2.render(self.power_supplyName,True,(0,0,0))
+                self.textSurface = self.letterFont.render(self.power_supplyName,True,(0,0,0))
                 self.screen.blit(self.textSurface,self.inputRectName)
-                self.name_power_supply = self.fuente2.render("Enter power supply name", True, (0,0,0))
+                self.name_power_supply = self.letterFont.render("Enter power supply name", True, (0,0,0))
                 self.screen.blit(self.name_power_supply,(7,120))
 
                 pygame.draw.rect(self.screen,self.color,self.inputRectValue)
-                self.textSurface2 = self.fuente2.render(self.power_supplyValue,True,(0,0,0))
+                self.textSurface2 = self.letterFont.render(self.power_supplyValue,True,(0,0,0))
                 self.screen.blit(self.textSurface2,self.inputRectValue)
-                self.fuente2 = pygame.font.Font(None,21)
-                self.value_power_supply= self.fuente2.render("Enter power supply name "+"(V)", True, (0,0,0))
+                self.letterFont = pygame.font.Font(None,21)
+                self.value_power_supply= self.letterFont.render("Enter power supply name "+"(V)", True, (0,0,0))
                 self.screen.blit(self.value_power_supply,(7,180))
 
             if self.state == 'simulation_mode':
@@ -755,13 +771,13 @@ class Circuit:
                         self.valueRectStatus = False
 
                     if PositionMenu[0]<20 and PositionMenu[1]<200:
-                        resistorNameInfo = self.fuente2.render(self.resistorName, True, (0,0,0))
-                        resistorValueInfo = self.fuente2.render(self.resistorValue, True, (0,0,0))
+                        resistorNameInfo = self.letterFont.render(self.resistorName, True, (0,0,0))
+                        resistorValueInfo = self.letterFont.render(self.resistorValue, True, (0,0,0))
                         self.screen.blit(resistorNameInfo,(PositionMenu[0],PositionMenu[1]))
                         self.screen.blit(resistorValueInfo,(PositionMenu[0],PositionMenu[1]+20))
 
-                        powerSupplyNameInfo = self.fuente2.render(self.power_supplyName, True, (0,0,0))
-                        powerSupplyVlueInfo = self.fuente2.render(self.power_supplyValue, True, (0,0,0))
+                        powerSupplyNameInfo = self.letterFont.render(self.power_supplyName, True, (0,0,0))
+                        powerSupplyVlueInfo = self.letterFont.render(self.power_supplyValue, True, (0,0,0))
                         self.screen.blit(powerSupplyNameInfo,(PositionMenu[0],PositionMenu[1]))
                         self.screen.blit(powerSupplyVlueInfo,(PositionMenu[0],PositionMenu[1]+20))
                 #Components movement
