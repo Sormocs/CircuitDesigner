@@ -704,8 +704,8 @@ class Circuit:
                                     print("Incomplete Information")
 
                                 else:
-                                    self.resistors_names.append(self.power_supplyName)
-                                    self.resistors_value.append(self.power_supplyValue)
+                                    self.resistors_names.insert(0, self.power_supplyName)
+                                    self.resistors_value.insert(0, self.power_supplyValue)
                                     
                                     print("Power supply list names: ",self.resistors_names)
                                     print("Power supply list values: ",self.resistors_value)
