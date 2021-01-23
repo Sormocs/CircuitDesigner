@@ -1,5 +1,7 @@
 class Resistencia:
 
+    """Clase del componente resistencia"""
+
     def __init__(self,nombre, voltaje, amperios):
 
         self.nombre = nombre

@@ -1,8 +1,12 @@
 class AlgOrdnamiento:
 
+    """Clase de los algoristmos de ordenamiento"""
+
     __instance = None
 
     def __new__(cls):
+
+        """Genera una solo instancia de la clase"""
 
         if AlgOrdnamiento.__instance is None:
             AlgOrdnamiento.__instance = object.__new__(cls)
@@ -11,9 +15,13 @@ class AlgOrdnamiento:
 
     def GetInstance(self):
 
+        """retorna la isntancia de la clase"""
+
         return AlgOrdnamiento.__instance
 
     def QuickSort(self,lista, start, end):
+
+        """Algoritmo de ordenamiento QuickSort"""
 
         if end - start > 1:
 
@@ -43,6 +51,8 @@ class AlgOrdnamiento:
                 return j
 
     def ShellSort(self,lista, n):
+
+        """Algortimos de ordenamiento de shellsort"""
 
         interval = n//2
 

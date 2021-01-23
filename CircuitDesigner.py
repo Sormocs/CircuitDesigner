@@ -222,6 +222,7 @@ class Circuit:
         return -1
 
     def show_nodes(self):
+        """Muestra los nodos además de sus nombres y sus valores"""
         if(len(self.nodes)==0): return
         for i in range(len(self.nodes)):
             self.screen.blit(self.components_type[i],self.nodes[i])
@@ -261,6 +262,8 @@ class Circuit:
             self.screen.blit(self.power_supply_color[i],self.powers[i])
 
     def show_edges(self):
+
+        """Muestra las aristas"""
 
         for i in range(len(self.edges)):
 

@@ -17,12 +17,7 @@ g.AgregarArista(2,4,3)
 g.AgregarArista(3,4,8)
 g.AgregarArista(4,5,3)
 
-print(g.vertices)
-Write(g)
-new_graph = Read()
-print(new_graph.vertices)
-g.Show()
-new_graph.Show()
+
 
 a = [1,2,3,4,5,6,7,8,9]
 
