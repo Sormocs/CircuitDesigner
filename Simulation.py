@@ -1,5 +1,6 @@
 from Button import Button
 from EntryBox import EntryBox
+import Json
 import pygame
 import sys
 import Grafo
@@ -20,6 +21,12 @@ class SimWin:
     components = []
     components_type = []
     yellow_edges = []
+
+    resistors_names = []
+    resistors_value = []
+
+    power_supply_names = []
+    power_supply_value = []
 
     graph = None
 
@@ -352,7 +359,7 @@ class SimWin:
     def SetScreen(self,sc):
         self.screen = sc
 
-    def SetComponents(self,nodes, edges, powers, graph,components_type,yellow_edges,com):
+    def SetComponents(self,nodes, edges, powers, graph,components_type,yellow_edges,com,r_names,r_values,p_names,p_values):
         self.nodes = nodes
         self.edges = edges
         self.powers = powers
@@ -360,16 +367,10 @@ class SimWin:
         self.components_type = components_type
         self.yellow_edges = yellow_edges
         self.components = com
-        print("Nodes")
-        print(nodes)
-        print("Edges")
-        print(edges)
-        print("Powers")
-        print(powers)
-        print("Components_type")
-        print(components_type)
-        print("Yellow edges")
-        print(yellow_edges)
+        self.resistors_names = r_names
+        self.resistors_value = r_values
+        self.power_supply_names = p_names
+        self.power_supply_value = p_values
 
     def RunWin(self):
         print(str(self.graph.GetVertices()[1].GetT()))
@@ -406,14 +407,21 @@ class SimWin:
                         run = False
                         return
 
-                    elif g_name.Click(pos):
+                    elif g_name.Click(pos) and save_clicked:
                         pass
 
                     elif export.Click(pos):
                          save_clicked = True
 
-                    elif export2.Click(pos):
+                    elif export2.Click(pos) and save_clicked:
                         save_clicked = False
+
+                    elif save.Click(pos) and save_clicked:
+                        fname = g_name.GetText()
+                        if fname != "":
+                            Json.Write(self.graph,self.nodes,self.edges,self.resistors_names,self.resistors_value,self.power_supply_names,self.power_supply_value,fname)
+                        else:
+                            pass
                     else:
                         pass
 

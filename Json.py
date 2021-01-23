@@ -1,7 +1,7 @@
 from Grafo import Grafo
 import json
 
-def Write(graph, nodes, s_edges,r_names,r_values,c_type):
+def Write(graph, nodes, s_edges,r_names,r_values,p_names,p_values,name):
     vertexes = graph.GetVertices()
     edges = graph.GetAristas()
     data = {}
@@ -78,18 +78,16 @@ def Write(graph, nodes, s_edges,r_names,r_values,c_type):
                 'p_value': pv
             })
 
-    #node2, power_supply1, b_resistor, y_power_supply, node3, node4,node5, power_supply2, b_resistorV, y_power_supplyH
-    for c in c_type:
-        data['c_type'].append({
+    # #node2, power_supply1, b_resistor, y_power_supply, node3, node4,node5, power_supply2, b_resistorV, y_power_supplyH
+    # for c in c_type:
+    #     data['c_type'].append({
 
-        })
-
-
-    with open('graph.json','w') as file:
+    #    })
+    with open(name+'.json','w') as file:
         json.dump(data,file)
 
-def Read():
-    with open('graph.json') as json_file:
+def Read(name):
+    with open(name+'.json') as json_file:
         graph = json.load(json_file)
         new_graph = Grafo()
         nodes = []
@@ -108,8 +106,27 @@ def Read():
         for a in graph['edges']:
             new_graph.AgregarArista(a['inicio'],a['fin'],a['valor'])
 
-        for n in nodes:
-            nodes.append(n['posx'],n['posy'])
+        for n in graph['nodes']:
+            nodes.append((n['posx'],n['posy']))
 
-        for e in s_edges:
-            edges.append(e['start'],e['end'])
+        for e in graph['s_edges']:
+            s_edges.append((e['start'],e['end']))
+
+        for n in graph['r_names']:
+            r_names.append(n['r_name'])
+
+        for v in graph['r_values']:
+            r_values.append(v['r_value'])
+
+        for pn in graph['p_names']:
+            p_names.append(pn['p_name'])
+
+        for pv in graph['p_values']:
+            p_values.append(pv['p_value'])
+
+        for c in graph['c_type']:
+            c_type.append(c['node'])
+
+        comps = [new_graph,nodes,s_edges,r_names,r_values,p_names,p_values,c_type]
+        return comps
+

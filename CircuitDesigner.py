@@ -152,6 +152,38 @@ class Circuit:
     def Getcomponents(self):
         return self.components
 
+    def GetResNames(self):
+        return self.resistors_names
+
+    def GetResValues(self):
+        return self.resistors_value
+
+    def GetPowerNames(self):
+        return self.power_supply_names
+
+    def GetPowerValues(self):
+        return self.power_supply_value
+
+    def ReadComponents(self,components):
+        self.graph = components[0]
+        self.nodes = components[1]
+        self.edges = components[2]
+        self.resistors_names = components[3]
+        self.resistors_value = components[4]
+        self.power_supply_names = components[5]
+        self.power_supply_value = components[6]
+        c_types = components[7]
+        comps = []
+        for c in c_types:
+            if c == "power":
+                comps.insert(0, self.components[1])
+            else:
+                comps.append(self.components[0])
+        self.components_type = comps
+
+
+
+
 
     def isClicked(self,x1,y1,x2,y2,mos_x,mos_y):
         if mos_x>x1 and (mos_x<x2):
