@@ -89,8 +89,8 @@ class Circuit:
     resistorName = ''
     resistorValue = ''
 
-    resistors_names = []
-    resistors_value = []
+    components_names = []
+    components_values = []
 
     #Power supply created
     power_supplyName = ''
@@ -103,7 +103,7 @@ class Circuit:
     nodes = []
     edges= []
     powers = []
-    components = [node2, power_supply1, b_resistor, y_power_supply, node3, node4,node5, power_supply2, b_resistorV, y_power_supplyH]
+    components = [node2, power_supply1, b_resistor, y_power_supply, node3, node4, node5, power_supply2, b_resistorV, y_power_supplyH]
     components_type = []
     yellow_edges = []
 
@@ -153,10 +153,10 @@ class Circuit:
         return self.components
 
     def GetResNames(self):
-        return self.resistors_names
+        return self.components_names
 
     def GetResValues(self):
-        return self.resistors_value
+        return self.components_values
 
     def GetPowerNames(self):
         return self.power_supply_names
@@ -168,8 +168,8 @@ class Circuit:
         self.graph = components[0]
         self.nodes = components[1]
         self.edges = components[2]
-        self.resistors_names = components[3]
-        self.resistors_value = components[4]
+        self.components_names = components[3]
+        self.components_values = components[4]
         self.power_supply_names = components[5]
         self.power_supply_value = components[6]
         c_types = components[7]
@@ -180,10 +180,6 @@ class Circuit:
             else:
                 comps.append(self.components[0])
         self.components_type = comps
-
-
-
-
 
     def isClicked(self,x1,y1,x2,y2,mos_x,mos_y):
         if mos_x>x1 and (mos_x<x2):
@@ -259,26 +255,33 @@ class Circuit:
         for i in range(len(self.nodes)):
             self.screen.blit(self.components_type[i],self.nodes[i])
 
-        for i in range(len(self.resistors_names)):
+        for i in range(len(self.components_names)):
+            #Horizontal resistor
             if self.components_type[i] == self.components[0]:
-                self.resistorV = self.valuesFont.render(self.resistors_value[i] +"\u03A9", False, (0,0,0))
-                self.resistorN = self.valuesFont.render(self.resistors_names[i], False, (0,0,0))
+                self.resistorV = self.valuesFont.render(self.components_values[i] +"\u03A9", False, (0,0,0))
+                self.resistorN = self.valuesFont.render(self.components_names[i], False, (0,0,0))
                 self.screen.blit(self.resistorN, (self.nodes[i][0],self.nodes[i][1]-20))
                 self.screen.blit(self.resistorV,(self.nodes[i][0]+20,self.nodes[i][1]-20))
+            #Vertical resistor
+            elif self.components_type[i] == self.components[5]:
+                self.resistorV = self.valuesFont.render(self.components_values[i] +"\u03A9", False, (0,0,0))
+                self.resistorN = self.valuesFont.render(self.components_names[i], False, (0,0,0))
+                self.screen.blit(self.resistorN, (self.nodes[i][0]+20,self.nodes[i][1]+20))
+                self.screen.blit(self.resistorV,(self.nodes[i][0]+40,self.nodes[i][1]+20))
+            #Vertical power supply
             elif self.components_type[i] == self.components[1]:
-                self.powersupplyV = self.valuesFont.render(self.resistors_value[i] +"V", False, (0,0,0))
-                self.powersupplyN = self.valuesFont.render(self.resistors_names[i], False, (0,0,0))
+                self.powersupplyV = self.valuesFont.render(self.components_values[i] +"V", False, (0,0,0))
+                self.powersupplyN = self.valuesFont.render(self.components_names[i], False, (0,0,0))
+                self.screen.blit(self.powersupplyN, (self.nodes[i][0]-30,self.nodes[i][1]-20))
+                self.screen.blit(self.powersupplyV, (self.nodes[i][0]-10,self.nodes[i][1]-20))
+            '''
+            #Horizontal power supply
+            elif self.components_type[i] == self.components[1]:
+                self.powersupplyV = self.valuesFont.render(self.components_values[i] +"V", False, (0,0,0))
+                self.powersupplyN = self.valuesFont.render(self.components_names[i], False, (0,0,0))
                 self.screen.blit(self.powersupplyN, (self.nodes[i][0],self.nodes[i][1]-20))
                 self.screen.blit(self.powersupplyV, (self.nodes[i][0]+20,self.nodes[i][1]-20))
-  
-        #Escribe los valores en una posición anterior
-        '''
-        for i in range(len(self.power_supply_names)):
-            self.powersupplyV = self.valuesFont.render(self.power_supply_value[i] +"V", False, (0,0,0))
-            self.powersupplyN = self.valuesFont.render(self.power_supply_names[i], False, (0,0,0))
-            self.screen.blit(self.powersupplyN, (self.nodes[i][0],self.nodes[i][1]-20))
-            self.screen.blit(self.powersupplyV, (self.nodes[i][0]+20,self.nodes[i][1]-20))
-        '''
+            '''
 
     def getPowers(self,mos_x,mos_y):
         for i in range(len(self.powers)):
@@ -678,11 +681,11 @@ class Circuit:
                                     print("Incomplete Information")
 
                                 else:
-                                    self.resistors_names.append(self.resistorName)
-                                    self.resistors_value.append(self.resistorValue)
+                                    self.components_names.append(self.resistorName)
+                                    self.components_values.append(self.resistorValue)
                                     
-                                    print("Resistors list names: ",self.resistors_names)
-                                    print("Resistors list values: ",self.resistors_value)
+                                    print("Components list names: ",self.components_names)
+                                    print("Components  list values: ",self.components_values)
 
                                     self.resistorName = ""
                                     self.resistorValue = ""
@@ -692,7 +695,7 @@ class Circuit:
                                     self.nodes.append((250,250))
                                     self.components_type.append(self.components[0])
 
-                                    self.graph.AgregarVertice(self.resistors_names[-1], int(self.resistors_value[-1]),
+                                    self.graph.AgregarVertice(self.components_names[-1], int(self.components_values[-1]),
                                                               50, False, [250,250])
                         #Add power_supply mode           
                         elif self.state == 'add_power_supply':
@@ -704,11 +707,11 @@ class Circuit:
                                     print("Incomplete Information")
 
                                 else:
-                                    self.resistors_names.insert(0, self.power_supplyName)
-                                    self.resistors_value.insert(0, self.power_supplyValue)
+                                    self.components_names.insert(0, self.power_supplyName)
+                                    self.components_values.insert(0, self.power_supplyValue)
                                     
-                                    print("Power supply list names: ",self.resistors_names)
-                                    print("Power supply list values: ",self.resistors_value)
+                                    print("Components list names: ",self.components_names)
+                                    print("Components list values: ",self.components_values)
                                                                         
                                     self.power_supplyName = ""
                                     self.power_supplyValue = ""
@@ -718,7 +721,7 @@ class Circuit:
                                     self.nodes.insert(0,(250,250))
                                     self.components_type.insert(0, self.components[1])
 
-                                    self.graph.AgregarVertice(self.resistors_names[-1], int(self.resistors_value[-1]),
+                                    self.graph.AgregarVertice(self.components_names[-1], int(self.components_values[-1]),
                                                               0, True, [250, 250])
                         #Add edges modes 
                         elif self.state == 'add_edge1':
@@ -868,4 +871,5 @@ class Circuit:
             self.show_powers()
             pygame.display.update()
             #self.clock.tick(60)
-
+            
+            
