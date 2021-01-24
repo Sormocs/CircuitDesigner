@@ -371,6 +371,7 @@ class SimWin:
         self.resistors_value = r_values
         self.power_supply_names = p_names
         self.power_supply_value = p_values
+        print(p_names)
 
     def RunWin(self):
         print(str(self.graph.GetVertices()[1].GetT()))

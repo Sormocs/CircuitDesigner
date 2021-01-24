@@ -1,7 +1,7 @@
 from Grafo import Grafo
 import json
 
-def Write(graph, nodes, s_edges,r_names,r_values,p_names,p_values,name):
+def Write(graph, nodes, s_edges,c_names,c_values,p_names,p_values,name):
     vertexes = graph.GetVertices()
     edges = graph.GetAristas()
     data = {}
@@ -9,10 +9,10 @@ def Write(graph, nodes, s_edges,r_names,r_values,p_names,p_values,name):
     data['edges'] = []
     data['nodes'] = []
     data['s_edges'] = []
-    data['r_names'] = []
-    data['r_values'] = []
-    data['p_names'] = []
-    data['p_values'] = []
+    data['c_names'] = []
+    data['c_values'] = []
+    #data['p_names'] = []
+    #data['p_values'] = []
     data['c_type'] = []
 
     i = 1
@@ -46,37 +46,41 @@ def Write(graph, nodes, s_edges,r_names,r_values,p_names,p_values,name):
                 'end':e[1]
             })
 
-    if r_names != []:
-        for rn in r_names:
-            data['r_names'].append({
-                'r_name':rn
+    if c_names != []:
+        for cn in c_names:
+            data['c_names'].append({
+                'c_name':cn
+            })
+            if cn == c_names[0]:
+                data['c_type'].append({
+                    'node': 'power'
+                })
+            else:
+                data['c_type'].append({
+                    'node': 'res'
+                })
+
+    if c_values != []:
+        for cv in c_values:
+            data['c_values'].append({
+                'c_value':cv
             })
 
-            data['c_type'].append({
-                'node': 'res'
-            })
-
-    if r_values != []:
-        for rv in r_values:
-            data['r_values'].append({
-                'r_value':rv
-            })
-
-    if p_names != []:
-        for pn in r_names:
-            data['p_names'].append({
-                'p_name': pn
-            })
-
-            data['c_type'].append({
-                'node':'power'
-            })
-
-    if p_values != []:
-        for pv in r_values:
-            data['p_values'].append({
-                'p_value': pv
-            })
+    # if p_names != []:
+    #     for pn in r_names:
+    #         data['p_names'].append({
+    #             'p_name': pn
+    #         })
+    #
+    #         data['c_type'].append({
+    #             'node':'power'
+    #         })
+    #
+    # if p_values != []:
+    #     for pv in r_values:
+    #         data['p_values'].append({
+    #             'p_value': pv
+    #         })
 
     # #node2, power_supply1, b_resistor, y_power_supply, node3, node4,node5, power_supply2, b_resistorV, y_power_supplyH
     # for c in c_type:
@@ -92,10 +96,10 @@ def Read(name):
         new_graph = Grafo()
         nodes = []
         s_edges = []
-        r_names = []
-        r_values = []
-        p_names = []
-        p_values = []
+        c_names = []
+        c_values = []
+        #p_names = []
+        #p_values = []
         c_type = []
         for v in graph['vertices']:
             if v['t'] == "True":
@@ -112,21 +116,21 @@ def Read(name):
         for e in graph['s_edges']:
             s_edges.append((e['start'],e['end']))
 
-        for n in graph['r_names']:
-            r_names.append(n['r_name'])
+        for n in graph['c_names']:
+            c_names.append(n['c_name'])
 
-        for v in graph['r_values']:
-            r_values.append(v['r_value'])
+        for v in graph['c_values']:
+            c_values.append(v['c_value'])
 
-        for pn in graph['p_names']:
-            p_names.append(pn['p_name'])
-
-        for pv in graph['p_values']:
-            p_values.append(pv['p_value'])
+        # for pn in graph['p_names']:
+        #     p_names.append(pn['p_name'])
+        #
+        # for pv in graph['p_values']:
+        #     p_values.append(pv['p_value'])
 
         for c in graph['c_type']:
             c_type.append(c['node'])
 
-        comps = [new_graph,nodes,s_edges,r_names,r_values,p_names,p_values,c_type]
+        comps = [new_graph,nodes,s_edges,c_names,c_values,c_type]
         return comps
 

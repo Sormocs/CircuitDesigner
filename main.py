@@ -83,7 +83,7 @@ def Simulation():
     circuit = Circuit()
     simulation = SimWin()
     simulation.SetScreen(screen)
-    simulation.SetComponents(circuit.GetNodes(), circuit.GetEdges(), circuit.GetPowers(), circuit.GetGraph(), circuit.GetComponentsType(), circuit.GetYellowEdges(),circuit.Getcomponents(),circuit.GetResNames(),circuit.GetResValues(),circuit.GetPowerNames(),circuit.GetPowerValues())
+    simulation.SetComponents(circuit.GetNodes(), circuit.GetEdges(), circuit.GetPowers(), circuit.GetGraph(), circuit.GetComponentsType(), circuit.GetYellowEdges(),circuit.Getcomponents(),circuit.GetCompsNames(),circuit.GetCompsValues(),circuit.GetPowerNames(),circuit.GetPowerValues())
     simulation.RunWin()
     DesignWin()
 

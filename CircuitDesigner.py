@@ -152,10 +152,10 @@ class Circuit:
     def Getcomponents(self):
         return self.components
 
-    def GetResNames(self):
+    def GetCompsNames(self):
         return self.components_names
 
-    def GetResValues(self):
+    def GetCompsValues(self):
         return self.components_values
 
     def GetPowerNames(self):
@@ -170,9 +170,9 @@ class Circuit:
         self.edges = components[2]
         self.components_names = components[3]
         self.components_values = components[4]
-        self.power_supply_names = components[5]
-        self.power_supply_value = components[6]
-        c_types = components[7]
+        # self.power_supply_names = components[5]
+        # self.power_supply_value = components[6]
+        c_types = components[5]
         comps = []
         for c in c_types:
             if c == "power":
