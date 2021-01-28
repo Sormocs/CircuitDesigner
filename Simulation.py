@@ -15,6 +15,8 @@ class SimWin:
     YELLOW = (255, 255, 0)
     BLUE = (0, 0, 255)
 
+    font = pygame.font.SysFont("Comic Sans MS", 22)
+
     nodes = []
     edges = []
     powers = []
@@ -369,20 +371,21 @@ class SimWin:
         self.components = com
         self.resistors_names = r_names
         self.resistors_value = r_values
-        self.power_supply_names = p_names
-        self.power_supply_value = p_values
-        print(p_names)
 
     def RunWin(self):
         print(str(self.graph.GetVertices()[1].GetT()))
         run = True
         # BOTON: color boton, posicion x, posicion y, ancho, altura, tamano de letra, texto, color texto
-        edit_again = Button(self.LIME_GREEN,20,500,150,70,22,"Back to design",self.WHITE)
+        show_up = Button(self.LIME_GREEN,20,40,155,70,21,"Show Hi-to-Low",self.WHITE)
+        show_down = Button(self.LIME_GREEN,20,130,155,70,21,"Show Low-to-Hi",self.WHITE)
+        edit_again = Button(self.LIME_GREEN,20,500,155,70,22,"Back to design",self.WHITE)
         export = Button(self.LIME_GREEN,620,500,150,70,24,"Export",self.WHITE)
         export2 = Button(self.LIME_GREEN, 630, 410, 120, 50, 24, "Cancel", self.WHITE)
         g_name = EntryBox("Introduce name:",600,490,40,180)
         save = Button(self.LIME_GREEN,630,540,120,50,24,"Save",self.WHITE)
+        res_title = self.font.render("Show resistors:",True,(120, 255, 255))
         save_clicked = False
+        showing = False
         while run:
             pygame.display.set_mode((800,600))
             self.screen.fill((255,255,255))
@@ -395,6 +398,13 @@ class SimWin:
 
             else:
                 export.Draw(self.screen)
+
+            if showing:
+                pass
+            else:
+                self.screen.blit(res_title,(20,5))
+                show_up.Draw(self.screen)
+                show_down.Draw(self.screen)
 
             for event in pygame.event.get():
                 pos = pygame.mouse.get_pos()
@@ -420,7 +430,7 @@ class SimWin:
                     elif save.Click(pos) and save_clicked:
                         fname = g_name.GetText()
                         if fname != "":
-                            Json.Write(self.graph,self.nodes,self.edges,self.resistors_names,self.resistors_value,self.power_supply_names,self.power_supply_value,fname)
+                            Json.Write(self.graph,self.nodes,self.edges,self.resistors_names,self.resistors_value,fname)
                         else:
                             pass
                     else:

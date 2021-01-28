@@ -47,10 +47,16 @@ def Main_Win():
 
                 if read.Click(pos) and Import:
                     if f_name != "":
-                        circuit = Json.Read(f_name.GetText())
-                        CircuitDes = Circuit()
-                        CircuitDes.ReadComponents(circuit)
-                        DesignWin()
+                        try:
+                            with open(f_name.GetText() + '.json') as json_file:
+                                pass
+                        except(FileNotFoundError):
+                            pass
+                        else:
+                            circuit = Json.Read(f_name.GetText())
+                            CircuitDes = Circuit()
+                            CircuitDes.ReadComponents(circuit)
+                            DesignWin()
                     else:
                         pass
 

@@ -1,7 +1,7 @@
 from Grafo import Grafo
 import json
 
-def Write(graph, nodes, s_edges,c_names,c_values,p_names,p_values,name):
+def Write(graph, nodes, s_edges,c_names,c_values,name):
     vertexes = graph.GetVertices()
     edges = graph.GetAristas()
     data = {}
