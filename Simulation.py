@@ -2,6 +2,7 @@ from Button import Button
 from EntryBox import EntryBox
 from QuickSort import SortDown
 from ShellSort import SortUp
+from Calculos import Formulas
 import Json
 import pygame
 import sys
@@ -34,6 +35,12 @@ class SimWin:
 
     sorted_names = []
     sorted_values = []
+
+    node_val = 0
+    node_name = ""
+    node_current = 0
+
+    formulas = Formulas()
 
     graph = None
 
@@ -404,6 +411,9 @@ class SimWin:
         save_clicked = False
         showing = "NOTHING"
         while run:
+            value = self.font.render("Node val:" + str(self.node_val), True, (0, 0, 0))
+            name = self.font.render("Node name:" + self.node_name, True, (0, 0, 0))
+            current = self.font.render("Node i:" + str(self.node_current), True, (0, 0, 0))
             pygame.display.set_mode((800,600))
             self.screen.fill((255,255,255))
             edit_again.Draw(self.screen)
@@ -418,13 +428,19 @@ class SimWin:
 
             if showing == "RESISTORS":
                 self.screen.blit(res_title, (20, 5))
-                pygame.draw.rect(self.screen, self.LIME_GREEN, (640, 20, 130, 100))
+                pygame.draw.rect(self.screen, self.LIME_GREEN, (630, 20, 150, 120))
+                self.screen.blit(name, (635, 22))
+                self.screen.blit(value, (635, 55))
+                self.screen.blit(current, (635, 85))
                 self.ShowRes()
                 cancel_s.Draw(self.screen)
             elif showing == "PATH":
                 pass
             else:
-                pygame.draw.rect(self.screen, self.LIME_GREEN, (640, 20, 130, 100))
+                pygame.draw.rect(self.screen, self.LIME_GREEN, (630, 20, 150, 120))
+                self.screen.blit(name, (635, 22))
+                self.screen.blit(value, (635, 55))
+                self.screen.blit(current, (635, 85))
                 self.screen.blit(res_title,(20,5))
                 self.screen.blit(path_title, (20, 210))
                 show_up.Draw(self.screen)
@@ -437,6 +453,20 @@ class SimWin:
                     run = False
                     pygame.quit()
                     sys.exit()
+
+                if event.type == pygame.MOUSEMOTION:
+                    i = 0
+                    for n in self.nodes:
+                        if n[0] <= pos[0] <= n[0]+50 and n[1] <= pos[1] <= n[1]+50:
+                            self.node_name = self.resistors_names[i]
+                            if n == self.nodes[0]:
+                                self.node_val = str(self.resistors_value[i])+" V"
+                                self.node_current = "NA"
+                            else:
+                                self.node_val = str(self.resistors_value[i]) + " Ω"
+                                self.node_current = str(self.formulas.CalcCorriente(int(self.resistors_value[0]),int(self.resistors_value[i]))*1000)+" mA"
+                        i += 1
+
 
                 if event.type == pygame.MOUSEBUTTONUP:
                     if edit_again.Click(pos):
