@@ -1,5 +1,7 @@
 from Button import Button
 from EntryBox import EntryBox
+from QuickSort import SortDown
+from ShellSort import SortUp
 import Json
 import pygame
 import sys
@@ -27,8 +29,11 @@ class SimWin:
     resistors_names = []
     resistors_value = []
 
-    power_supply_names = []
-    power_supply_value = []
+    #power_supply_names = []
+    #power_supply_value = []
+
+    sorted_names = []
+    sorted_values = []
 
     graph = None
 
@@ -49,8 +54,7 @@ class SimWin:
         for i in range(len(self.powers)):
             self.x1 = self.powers[i][0]
             self.y1 = self.powers[i][1]
-            if self.isClicked(self.x1, self.y1, self.x1 + self.power1.get_width(), self.y1 + self.power1.get_height(),
-                              mos_x, mos_y):
+            if self.isClicked(self.x1, self.y1, self.x1 + self.power1.get_width(), self.y1 + self.power1.get_height(),mos_x, mos_y):
                 return i
         return -1
 
@@ -372,6 +376,16 @@ class SimWin:
         self.resistors_names = r_names
         self.resistors_value = r_values
 
+    def ShowRes(self):
+        y = 45
+        j = 0
+        for i in self.sorted_values:
+            text = self.sorted_names[j]+" "+str(i)
+            stext = self.font.render(text,True,(0,0,0))
+            self.screen.blit(stext,(20,y))
+            y += 30
+            j += 1
+
     def RunWin(self):
         print(str(self.graph.GetVertices()[1].GetT()))
         run = True
@@ -381,11 +395,14 @@ class SimWin:
         edit_again = Button(self.LIME_GREEN,20,500,155,70,22,"Back to design",self.WHITE)
         export = Button(self.LIME_GREEN,620,500,150,70,24,"Export",self.WHITE)
         export2 = Button(self.LIME_GREEN, 630, 410, 120, 50, 24, "Cancel", self.WHITE)
+        cancel_s = Button(self.LIME_GREEN, 35, 400, 120, 50, 24, "Close", self.WHITE)
+        sel_nodes = Button(self.LIME_GREEN, 20, 250, 155, 70, 24, "Select Nodes", self.WHITE)
         g_name = EntryBox("Introduce name:",600,490,40,180)
         save = Button(self.LIME_GREEN,630,540,120,50,24,"Save",self.WHITE)
-        res_title = self.font.render("Show resistors:",True,(120, 255, 255))
+        res_title = self.font.render("Show resistors:",True,(0, 0, 0))
+        path_title = self.font.render("Show path:", True, (0, 0, 0))
         save_clicked = False
-        showing = False
+        showing = "NOTHING"
         while run:
             pygame.display.set_mode((800,600))
             self.screen.fill((255,255,255))
@@ -399,12 +416,20 @@ class SimWin:
             else:
                 export.Draw(self.screen)
 
-            if showing:
+            if showing == "RESISTORS":
+                self.screen.blit(res_title, (20, 5))
+                pygame.draw.rect(self.screen, self.LIME_GREEN, (640, 20, 130, 100))
+                self.ShowRes()
+                cancel_s.Draw(self.screen)
+            elif showing == "PATH":
                 pass
             else:
+                pygame.draw.rect(self.screen, self.LIME_GREEN, (640, 20, 130, 100))
                 self.screen.blit(res_title,(20,5))
+                self.screen.blit(path_title, (20, 210))
                 show_up.Draw(self.screen)
                 show_down.Draw(self.screen)
+                sel_nodes.Draw(self.screen)
 
             for event in pygame.event.get():
                 pos = pygame.mouse.get_pos()
@@ -433,6 +458,23 @@ class SimWin:
                             Json.Write(self.graph,self.nodes,self.edges,self.resistors_names,self.resistors_value,fname)
                         else:
                             pass
+                    elif show_down.Click(pos) and showing == "NOTHING":
+                        showing = "RESISTORS"
+                        show = SortDown(self.resistors_value[1:],self.resistors_names[1:])
+                        self.sorted_values = show[0]
+                        self.sorted_names = show[1]
+
+                    elif show_up.Click(pos) and showing == "NOTHING":
+                        showing = "RESISTORS"
+                        show = SortUp(self.resistors_value[1:],self.resistors_names[1:])
+                        self.sorted_values = show[0]
+                        self.sorted_names = show[1]
+
+                    elif cancel_s.Click(pos) and showing == "RESISTORS":
+                        showing = "NOTHING"
+                        self.sorted_values = []
+                        self.sorted_names = []
+
                     else:
                         pass
 
