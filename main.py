@@ -101,5 +101,3 @@ def DesignWin():
 if __name__ == '__main__':
     #Formulas1 = Formulas()
     Main_Win()
-
-

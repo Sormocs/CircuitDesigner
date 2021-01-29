@@ -3,7 +3,7 @@ from Simulation import SimWin
 import pygame
 import pygame as pg
 import sys
-import Grafo
+import Grafo.Grafo
 
 
 pygame.init()
