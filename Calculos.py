@@ -20,8 +20,8 @@ class Formulas():
         v = float(i)*float(r)
         return v
 
-    def CalcResistencia(self,i,v):
-        """Calcula el valor de la residencia"""
+    def CalcResistencia(self,v,i):
+        """Calcula el valor de la resistencia"""
         r = float(v)/float(i)
         return r
 

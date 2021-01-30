@@ -11,6 +11,7 @@ import Grafo
 pygame.init()
 
 class SimWin:
+    """Clase SimWin que se crea para el modo simulacion"""
 
     LIME_GREEN = (50,205,50)
     WHITE = (255,255,255)
@@ -36,6 +37,9 @@ class SimWin:
     resistors_names = []
     resistors_value = []
 
+    total_val = 0
+    total_i = 0
+
     #power_supply_names = []
     #power_supply_value = []
 
@@ -48,6 +52,7 @@ class SimWin:
     node_name = ""
     node_current = 0
     v = ""
+    edge = ""
 
     formulas = Formulas()
 
@@ -59,11 +64,13 @@ class SimWin:
     screen = None
 
     def __new__(cls):
+        """Constructor para el singleton de la clase"""
         if SimWin.instance is None:
             SimWin.instance = object.__new__(cls)
         return SimWin.instance
 
     def show_nodes(self):
+        """Muestra los nodos (resistencias)"""
         if (len(self.nodes) == 0): return
         for i in range(len(self.nodes)):
             self.screen.blit(self.components_type[i], self.nodes[i])
@@ -90,6 +97,7 @@ class SimWin:
             
 
     def getPowers(self, mos_x, mos_y):
+        """Obtiene click en la fuente de poder"""
         for i in range(len(self.powers)):
             self.x1 = self.powers[i][0]
             self.y1 = self.powers[i][1]
@@ -97,12 +105,8 @@ class SimWin:
                 return i
         return -1
 
-    def show_powers(self):
-        if (len(self.powers) == 0): return
-        for i in range(len(self.powers)):
-            self.screen.blit(self.power_supply_color[i], self.powers[i])
-
     def show_djs(self, listaCamino):
+        """Dibuja las aristas del grafo para el camino con mayor o menor tension"""
 
         lista = listaCamino[0]
 
@@ -406,7 +410,7 @@ class SimWin:
         self.edges = flag
 
     def show_edges(self):
-
+        """Dibuja las aristas del grafo"""
         for i in range(len(self.edges)):
 
             if self.components_type[self.edges[i][0]] == self.components[0] and self.components_type[
@@ -701,9 +705,11 @@ class SimWin:
         self.move = False
 
     def SetScreen(self,sc):
+        """Asigna el screen"""
         self.screen = sc
 
     def SetComponents(self,nodes, edges, powers, graph,components_type,yellow_edges,com,r_names,r_values,p_names,p_values):
+        """Obtiene los componentes de archivo .json para asiganrlos directamente y rehacer un circuito guardado."""
         self.nodes = nodes
         self.edges = edges
         self.powers = powers
@@ -715,6 +721,7 @@ class SimWin:
         self.resistors_value = r_values
 
     def isClicked(self,x1,y1,x2,y2,mos_x,mos_y):
+        """Verificar un click"""
         if mos_x>x1 and (mos_x<x2):
             x_inside = True
         else: x_inside = False
@@ -727,6 +734,7 @@ class SimWin:
             return False
 
     def getNode(self,mos_x,mos_y):
+        """Obtener la posicion de un nodo en un grafo"""
         for i in range(len(self.nodes)):
             self.x1 = self.nodes[i][0]
             self.y1 = self.nodes[i][1]
@@ -735,6 +743,7 @@ class SimWin:
         return -1
 
     def ShowRes(self):
+        """Muestra los valores de las listas formadas por los algoritmos de ordenamiento"""
         y = 45
         j = 0
         for i in self.sorted_values:
@@ -744,13 +753,31 @@ class SimWin:
             y += 30
             j += 1
 
+    def TotalValues(self):
+        res = 0
+        for n in self.resistors_value[1:]:
+            num = int(n)
+            res += num
+        self.total_val = res
+        self.total_i = self.formulas.CalcCorriente(self.resistors_value[0],res)
+
+    def EdgeVal(self,i):
+        """Metodo para obtener valor del voltaje de las aristas"""
+        j=1
+        res = self.formulas.CalcTension(self.total_i, self.resistors_value[i])
+        while j < i:
+            res += self.formulas.CalcTension(self.total_i, self.resistors_value[j])
+            j+=1
+        return float(self.resistors_value[0])-float(res)
+
     def RunWin(self):
 
         run = True
+        self.TotalValues()
         # BOTON: color boton, posicion x, posicion y, ancho, altura, tamano de letra, texto, color texto
         show_up = Button(self.LIME_GREEN,20,40,155,70,21,"Show Hi-to-Low",self.WHITE)
         show_down = Button(self.LIME_GREEN,20,130,155,70,21,"Show Low-to-Hi",self.WHITE)
-        edit_again = Button(self.LIME_GREEN,20,500,155,70,22,"Back to design",self.WHITE)
+        edit_again = Button(self.LIME_GREEN,20,500,150,70,22,"Back to design",self.WHITE)
         export = Button(self.LIME_GREEN,620,500,150,70,24,"Export",self.WHITE)
         export2 = Button(self.LIME_GREEN, 630, 410, 120, 50, 24, "Cancel", self.WHITE)
         cancel_s = Button(self.LIME_GREEN, 35, 400, 120, 50, 24, "Close", self.WHITE)
@@ -769,6 +796,7 @@ class SimWin:
             name = self.font.render("Name: " + self.node_name, True, (0, 0, 0))
             current = self.font.render("mA: " + str(self.node_current), True, (0, 0, 0))
             v = self.font.render("V: " + str(self.v), True, (0, 0, 0))
+            edge = self.font.render("Edge: " + str(self.edge), True, (0, 0, 0))
             pygame.display.set_mode((800,600))
             self.screen.fill((255,255,255))
             edit_again.Draw(self.screen)
@@ -785,11 +813,12 @@ class SimWin:
 
             if showing == "RESISTORS":
                 self.screen.blit(res_title, (20, 5))
-                pygame.draw.rect(self.screen, self.LIME_GREEN, (620, 20, 160, 140))
+                pygame.draw.rect(self.screen, self.LIME_GREEN, (620, 20, 160, 160))
                 self.screen.blit(name, (622, 22))
                 self.screen.blit(value, (622, 55))
                 self.screen.blit(current, (622, 85))
                 self.screen.blit(v, (622, 115))
+                self.screen.blit(edge,(622,145))
                 self.ShowRes()
                 cancel_s.Draw(self.screen)
             elif showing == "PATH":
@@ -807,11 +836,12 @@ class SimWin:
 
                 cancel_s2.Draw(self.screen)
             else:
-                pygame.draw.rect(self.screen, self.LIME_GREEN, (620, 20, 160, 140))
+                pygame.draw.rect(self.screen, self.LIME_GREEN, (620, 20, 160, 160))
                 self.screen.blit(name, (622, 22))
                 self.screen.blit(value, (622, 55))
                 self.screen.blit(current, (622, 85))
                 self.screen.blit(v,(622,115))
+                self.screen.blit(edge, (622, 145))
                 self.screen.blit(res_title,(20,5))
                 self.screen.blit(path_title, (20, 210))
                 show_up.Draw(self.screen)
@@ -834,10 +864,12 @@ class SimWin:
                                 self.node_val = str(self.resistors_value[i])+" V"
                                 self.node_current = "NA"
                                 self.v = "NA"
+                                self.edge = self.resistors_value[0]
                             else:
                                 self.node_val = str(self.resistors_value[i]) + " Ω"
-                                self.node_current = str(self.formulas.CalcCorriente(int(self.resistors_value[0]),int(self.resistors_value[i]))*1000)
-                                self.v = str(self.formulas.CalcTension(self.formulas.CalcCorriente(int(self.resistors_value[0]),int(self.resistors_value[i])),self.resistors_value[i]))
+                                self.v = str(self.formulas.CalcTension(self.total_i,self.resistors_value[i]))
+                                self.node_current =self.total_i * 1000
+                                self.edge = self.EdgeVal(i)
                         i += 1
 
 

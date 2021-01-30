@@ -74,6 +74,7 @@ def Main_Win():
                         text = f_name.GetText()
                         new = text + event.unicode
                         f_name.SetText(new)
+    pygame.display.update()
 
 
 def Simulation():

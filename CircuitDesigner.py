@@ -685,9 +685,7 @@ class Circuit:
                                 else:
                                     self.components_names.append(self.resistorName)
                                     self.components_values.append(self.resistorValue)
-                                    
-                                    print("Components list names: ",self.components_names)
-                                    print("Components  list values: ",self.components_values)
+
 
                                     self.resistorName = ""
                                     self.resistorValue = ""
@@ -711,9 +709,7 @@ class Circuit:
                                 else:
                                     self.components_names.insert(0, self.power_supplyName)
                                     self.components_values.insert(0, self.power_supplyValue)
-                                    
-                                    print("Components list names: ",self.components_names)
-                                    print("Components list values: ",self.components_values)
+
                                                                         
                                     self.power_supplyName = ""
                                     self.power_supplyValue = ""
@@ -739,7 +735,7 @@ class Circuit:
                             self.pointB = self.getNode(pos[0],pos[1])
                             if self.pointB != -1 and self.pointB != self.pointA:
                                 self.edges.append((self.pointA,self.pointB))
-                                print(self.pointB,self.pointA)
+
                                 #self.edges.append((self.pointB,self.pointA))
                                 self.graph.AgregarArista(self.pointA+1,self.pointB+1,0)
                                 self.state = 'add_edge1'
@@ -873,7 +869,6 @@ class Circuit:
             self.show_edges()
             self.show_nodes()
             pygame.display.update()
-            self.graph.MostrarTodasAristas()
             #self.clock.tick(60)
             
             
