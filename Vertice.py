@@ -44,8 +44,8 @@ class Vertice:
 
         """agrega una arista que conecta 2 nodos, recibe el nodo al cual se quiere conectar y el valor de dicha arista"""
 
-        if id not in self.vecinos:
-            self.vecinos.append([vertice, valor])
+        print("Hola")
+        self.vecinos.append([vertice, valor])
 
     def CrearComponente(self,n,v,a,t):
 

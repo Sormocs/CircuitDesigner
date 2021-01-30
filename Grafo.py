@@ -29,9 +29,8 @@ class Grafo:
 
         """Agrega una aritas que conecta 2 nodos"""
 
-        if inicio in self.vertices and fin in self.vertices:
-            self.aristas.append([inicio,fin,valor])
-            self.vertices[inicio].AgregarVecino(fin, valor)
+        self.aristas.append([inicio,fin,valor])
+        self.vertices[inicio].AgregarVecino(fin, valor)
             #self.vertices[fin].AgregarVecino(inicio, volts)
 
     def BuscarID(self, nombre):
@@ -238,4 +237,10 @@ class Grafo:
             lista.append(self.vertices[i])
 
         return  lista
+
+    def MostrarTodasAristas(self):
+
+        for i in self.vertices:
+
+                print(self.vertices[i], self.vertices[i].vecinos)
 

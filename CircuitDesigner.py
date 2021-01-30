@@ -4,6 +4,7 @@ import pygame
 import pygame as pg
 import sys
 import Grafo
+import random
 
 
 pygame.init()
@@ -740,7 +741,7 @@ class Circuit:
                                 self.edges.append((self.pointA,self.pointB))
                                 print(self.pointB,self.pointA)
                                 #self.edges.append((self.pointB,self.pointA))
-                                self.graph.AgregarArista(self.pointA,self.pointB,0)
+                                self.graph.AgregarArista(self.pointA+1,self.pointB+1,0)
                                 self.state = 'add_edge1'
                                 self.msg = 'Choose initial vertex of the edge.'
                                 self.pointA = -1
@@ -763,7 +764,7 @@ class Circuit:
                             if self.pointB != -1 and self.pointB != self.pointA:
                                 self.edges.remove((self.pointA,self.pointB))
                                 #self.edges.remove((self.pointB,self.pointA))
-                                self.graph.EliminarAristaEspecifica(self.pointA,self.pointB)
+                                self.graph.EliminarAristaEspecifica(self.pointA+1,self.pointB+1)
                                 self.state = 'delete_edge1'
                                 self.msg = 'Choose initial vertex of the edge.'
                                 self.pointA = -1
@@ -872,6 +873,7 @@ class Circuit:
             self.show_edges()
             self.show_nodes()
             pygame.display.update()
+            self.graph.MostrarTodasAristas()
             #self.clock.tick(60)
             
             
