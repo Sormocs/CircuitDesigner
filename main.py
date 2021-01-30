@@ -1,10 +1,8 @@
 from Button import Button
-from Calculos import Formulas
 from CircuitDesigner import Circuit
 from Simulation import SimWin
 from EntryBox import EntryBox
 import Json
-import Grafo
 import pygame
 import sys
 
@@ -13,6 +11,7 @@ screen = pygame.display.set_mode((800,600))
 pygame.display.set_caption("Circuit Designer")
 
 def Main_Win():
+    """Genera la ventana principal"""
     bg = pygame.image.load('.\Images\CDBG.png')
     run = True
     # BOTON: color boton, posicion x, posicion y, ancho, altura, tamano de letra, texto, color texto
@@ -77,15 +76,8 @@ def Main_Win():
                         f_name.SetText(new)
 
 
-def AddRes(graph):
-
-    graph.AgregarVertice("Res1",10,10,False)
-
-def AddPower(graph):
-
-    graph.AgregarVertice("Power",10,10,True)
-
 def Simulation():
+    """Pasa a la ventana simulacion con todos los datos"""
     circuit = Circuit()
     simulation = SimWin()
     simulation.SetScreen(screen)
@@ -94,10 +86,10 @@ def Simulation():
     DesignWin()
 
 def DesignWin():
+    """Pasa a la ventana del modo diseño"""
     CircuitDes = Circuit()
     CircuitDes.RunWin(screen)
     Simulation()
 
 if __name__ == '__main__':
-    #Formulas1 = Formulas()
     Main_Win()

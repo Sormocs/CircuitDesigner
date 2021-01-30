@@ -8,4 +8,5 @@ class fuente:
         self.voltaje = v
 
     def GetNombre(self):
+        """Retorna el nombre de la fuente"""
         return self.nombre

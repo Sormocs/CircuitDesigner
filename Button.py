@@ -12,6 +12,7 @@ class Button():
         self.text_color = tcolor
 
     def Draw(self, screen):
+        """Dibuja los botones"""
         pygame.draw.rect(screen, self.color, (self.posx, self.posy, self.width, self.height), 0)
         font = pygame.font.SysFont("Comic Sans MS", self.fontsize)
         text = font.render(self.text, 1, self.text_color)
@@ -19,20 +20,24 @@ class Button():
                            self.posy + (self.height // 2 - text.get_height() // 2)))  #
 
     def Click(self, mpos):
+        """Verifica si el usuario clickeo el boton"""
         if self.posx < mpos[0] < self.posx + self.width and self.posy < mpos[1] < self.posy + self.height:
             return True
         else:
             return False
 
     def MouseOver(self, mpos):
+        """Verifica si el mouse esta encima"""
         if self.posx < mpos[0] < self.posx + self.width and self.posy < mpos[1] < self.posy + self.height:
             return True
         else:
             return False
 
     def SetColor(self, color, tcolor):
+        """Pone color al boton"""
         self.color = color
         self.text_color = tcolor
 
     def SetText(self, text):
+        """Pone texto al boton"""
         self.text = text

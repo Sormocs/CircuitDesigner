@@ -31,6 +31,8 @@ class AlgOrdnamiento:
 
     def Partition(self,lista, start, end):
 
+        """Divide la mitad a la mitad y genera 2 mini listas"""
+
         pivot = lista[start]
         i = start+1
         j = end - 1

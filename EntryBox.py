@@ -4,6 +4,8 @@ pygame.init()
 
 class EntryBox:
 
+    """Clase que genera un EntryBox"""
+
     def __init__(self,text_above,xcord,ycord,box_height,box_width):
 
         self.box_xcord = xcord
@@ -20,12 +22,14 @@ class EntryBox:
         self.selected = False
 
     def Draw(self,screen):
+        """Dibuja la caja"""
         pygame.draw.rect(screen, self.color, (self.box_xcord, self.box_ycord, self.box_width, self.box_height), 2)
         showtxt = self.font.render(self.text, True, (120, 255, 255))
         screen.blit(self.text_above, (self.box_xcord, self.box_ycord - 30))
         screen.blit(showtxt, (self.box_xcord + 5, self.box_ycord - 4))
 
     def Click(self,mpos):
+        """Verifica si fue clickeado"""
         if self.box_xcord<mpos[0]<self.box_xcord + self.box_width and self.box_ycord<mpos[1]<self.box_ycord+self.box_height:
             self.selected = True
             self.color = self.color_selected
@@ -35,16 +39,20 @@ class EntryBox:
             return False
 
     def CheckSelected(self):
+        """Verifica si fue seleccionado"""
         if self.selected:
             return True
         else:
             return False
 
     def SetSelected(self,selected):
+        """Setea el seleccionado"""
         self.selected = selected
 
     def SetText(self,text):
+        """Setea el texto"""
         self.text = text
 
     def GetText(self):
+        """Retorna el texto"""
         return self.text
