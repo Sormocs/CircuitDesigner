@@ -19,6 +19,8 @@ class SimWin:
     YELLOW = (255, 255, 0)
     BLUE = (0, 0, 255)
     GREEN = (0, 255, 0)
+
+    node2 = pygame.image.load(r'Images\resistorH.png')
     
     valuesFont = pygame.font.Font('roboto.ttf', 13)
     font = pygame.font.SysFont("Comic Sans MS", 22)
@@ -39,11 +41,15 @@ class SimWin:
     sorted_names = []
     sorted_values = []
 
+    selected_nodes = []
+
     node_val = 0
     node_name = ""
     node_current = 0
 
     formulas = Formulas()
+
+    path = []
 
     graph = None
 
@@ -107,7 +113,8 @@ class SimWin:
                 break
 
             recorrido.append(recorrido[x]-1, recorrido[x+1])
-
+        print(listaCamino[0])
+        print(recorrido)
         for i in range(len(recorrido)):
 
             if self.components_type[self.edges[i][0]] == self.components[0] and self.components_type[
@@ -702,6 +709,26 @@ class SimWin:
         self.resistors_names = r_names
         self.resistors_value = r_values
 
+    def isClicked(self,x1,y1,x2,y2,mos_x,mos_y):
+        if mos_x>x1 and (mos_x<x2):
+            x_inside = True
+        else: x_inside = False
+        if mos_y>y1 and (mos_y<y2):
+            y_inside = True
+        else: y_inside = False
+        if x_inside and y_inside:
+            return True
+        else:
+            return False
+
+    def getNode(self,mos_x,mos_y):
+        for i in range(len(self.nodes)):
+            self.x1 = self.nodes[i][0]
+            self.y1 = self.nodes[i][1]
+            if self.isClicked(self.x1, self.y1, self.x1 + self.node2.get_width(), self.y1 + self.node2.get_height(), mos_x, mos_y):
+                return i
+        return -1
+
     def ShowRes(self):
         y = 45
         j = 0
@@ -713,7 +740,7 @@ class SimWin:
             j += 1
 
     def RunWin(self):
-        print(str(self.graph.GetVertices()[1].GetT()))
+
         run = True
         # BOTON: color boton, posicion x, posicion y, ancho, altura, tamano de letra, texto, color texto
         show_up = Button(self.LIME_GREEN,20,40,155,70,21,"Show Hi-to-Low",self.WHITE)
@@ -722,20 +749,25 @@ class SimWin:
         export = Button(self.LIME_GREEN,620,500,150,70,24,"Export",self.WHITE)
         export2 = Button(self.LIME_GREEN, 630, 410, 120, 50, 24, "Cancel", self.WHITE)
         cancel_s = Button(self.LIME_GREEN, 35, 400, 120, 50, 24, "Close", self.WHITE)
+        cancel_s2 = Button(self.LIME_GREEN, 35, 400, 120, 50, 24, "Close", self.WHITE)
         sel_nodes = Button(self.LIME_GREEN, 20, 250, 155, 70, 24, "Select Nodes", self.WHITE)
         g_name = EntryBox("Introduce name:",600,490,40,180)
         save = Button(self.LIME_GREEN,630,540,120,50,24,"Save",self.WHITE)
         res_title = self.font.render("Show resistors:",True,(0, 0, 0))
         path_title = self.font.render("Show path:", True, (0, 0, 0))
         save_clicked = False
+        selection = True
+        show = False
         showing = "NOTHING"
         while run:
-            value = self.font.render("Node val:" + str(self.node_val), True, (0, 0, 0))
-            name = self.font.render("Node name:" + self.node_name, True, (0, 0, 0))
-            current = self.font.render("Node i:" + str(self.node_current), True, (0, 0, 0))
+            value = self.font.render("Value:" + str(self.node_val), True, (0, 0, 0))
+            name = self.font.render("Name:" + self.node_name, True, (0, 0, 0))
+            current = self.font.render("Current:" + str(self.node_current), True, (0, 0, 0))
             pygame.display.set_mode((800,600))
             self.screen.fill((255,255,255))
             edit_again.Draw(self.screen)
+            #self.show_edges()
+            self.show_nodes()
 
             if save_clicked:
                 g_name.Draw(self.screen)
@@ -754,7 +786,19 @@ class SimWin:
                 self.ShowRes()
                 cancel_s.Draw(self.screen)
             elif showing == "PATH":
-                pass
+                if show:
+                    self.show_djs(self.path)
+
+                if len(self.selected_nodes) == 1:
+                    text1 = self.font.render("Node 1: ", True, (0, 0, 0))
+                    self.screen.blit(text1, (20, 50))
+                elif len(self.selected_nodes) == 2:
+                    text1 = self.font.render("Node 1: ", True, (0, 0, 0))
+                    self.screen.blit(text1, (20, 50))
+                    text1 = self.font.render("Node 2: ", True, (0, 0, 0))
+                    self.screen.blit(text1, (20, 80))
+
+                cancel_s2.Draw(self.screen)
             else:
                 pygame.draw.rect(self.screen, self.LIME_GREEN, (630, 20, 150, 120))
                 self.screen.blit(name, (635, 22))
@@ -765,6 +809,8 @@ class SimWin:
                 show_up.Draw(self.screen)
                 show_down.Draw(self.screen)
                 sel_nodes.Draw(self.screen)
+
+
 
             for event in pygame.event.get():
                 pos = pygame.mouse.get_pos()
@@ -792,37 +838,68 @@ class SimWin:
                         run = False
                         return
 
-                    elif g_name.Click(pos) and save_clicked:
+                    if g_name.Click(pos) and save_clicked:
                         pass
 
-                    elif export.Click(pos):
+                    if export.Click(pos):
                          save_clicked = True
 
-                    elif export2.Click(pos) and save_clicked:
+                    if export2.Click(pos) and save_clicked:
                         save_clicked = False
 
-                    elif save.Click(pos) and save_clicked:
+                    if save.Click(pos) and save_clicked:
                         fname = g_name.GetText()
                         if fname != "":
                             Json.Write(self.graph,self.nodes,self.edges,self.resistors_names,self.resistors_value,fname)
                         else:
                             pass
-                    elif show_down.Click(pos) and showing == "NOTHING":
+                    if show_down.Click(pos) and showing == "NOTHING":
                         showing = "RESISTORS"
                         show = SortDown(self.resistors_value[1:],self.resistors_names[1:])
                         self.sorted_values = show[0]
                         self.sorted_names = show[1]
 
-                    elif show_up.Click(pos) and showing == "NOTHING":
+                    if show_up.Click(pos) and showing == "NOTHING":
                         showing = "RESISTORS"
                         show = SortUp(self.resistors_value[1:],self.resistors_names[1:])
                         self.sorted_values = show[0]
                         self.sorted_names = show[1]
 
-                    elif cancel_s.Click(pos) and showing == "RESISTORS":
+                    if sel_nodes.Click(pos) and showing == "NOTHING":
+                        showing = "PATH"
+                        selection = True
+
+                    if selection:
+                        for n in self.nodes:
+                            if n[0] <= pos[0] <= n[0] + 50 and n[1] <= pos[1] <= n[1] + 50:
+                                if len(self.selected_nodes) < 2:
+                                    if n != []:
+                                        self.selected_nodes.append(n)
+                                        print(self.selected_nodes)
+                                else:
+                                    selection = False
+                                    show = True
+                                    print(show)
+                                    ids = []
+                                    for n in self.selected_nodes:
+                                        id = self.getNode(n[0]+5, n[1]+5)
+                                        if id != -1:
+                                            ids += [id]
+                                    print(ids)
+                                    self.graph.DikjstraMinimo(ids[0])
+                                    self.path = self.graph.Camino(ids[0], ids[1])
+
+
+                    if cancel_s.Click(pos) and showing == "RESISTORS":
                         showing = "NOTHING"
                         self.sorted_values = []
                         self.sorted_names = []
+
+                    if cancel_s2.Click(pos) and showing == "PATH":
+                        show = False
+                        selection = False
+                        showing = "NOTHING"
+                        self.selected_nodes = []
 
                     else:
                         pass
@@ -840,8 +917,4 @@ class SimWin:
                             new = text + event.unicode
                             g_name.SetText(new)
 
-
-            self.show_edges()
-            self.show_nodes()
-            self.show_powers()
             pygame.display.update()

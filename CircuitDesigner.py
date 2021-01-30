@@ -169,8 +169,6 @@ class Circuit:
         self.edges = components[2]
         self.components_names = components[3]
         self.components_values = components[4]
-        # self.power_supply_names = components[5]
-        # self.power_supply_value = components[6]
         c_types = components[5]
         comps = []
         for c in c_types:
@@ -525,7 +523,7 @@ class Circuit:
             self.screen.blit(self.simulation_button,(7+self.algo_button.get_width()/2-20,498+self.algo_button.get_height()/2-13))
               
     def show_msg(self):
-         """Muestra los mensajes en pantalla"""
+        """Muestra los mensajes en pantalla"""
         self.msg_box = self.msg_font.render(self.msg, True, self.BLUE)
         self.screen.blit(self.msg_box,(215,570))
 

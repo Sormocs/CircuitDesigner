@@ -239,21 +239,3 @@ class Grafo:
 
         return  lista
 
-    def Show(self):
-
-        """muestra los nodos """
-        vertices = self.GenerarLista()
-        print("~~~~~~~~~~~~~~")
-        for v in vertices:
-            print(v.GetName())
-            print(v.GetPos())
-
-        print("~~~~~~~~~~~~~~")
-
-        for e in self.aristas:
-            print("Aristas:")
-            print(e[0])
-            print(e[1])
-            print(e[2])
-
-        print("~~~~~~~~~~~~~~")
