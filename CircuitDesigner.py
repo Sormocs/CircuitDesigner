@@ -106,7 +106,6 @@ class Circuit:
     components = [node2, power_supply1, b_resistor, y_power_supply, node3, node4, node5, power_supply2, b_resistorV, y_power_supplyH]
     components_type = []
     yellow_edges = []
-
     color_power_supply = [power_supply1]
     power_supply_color = []
 
@@ -181,7 +180,9 @@ class Circuit:
                 comps.append(self.components[0])
         self.components_type = comps
 
+    
     def isClicked(self,x1,y1,x2,y2,mos_x,mos_y):
+        """Metodo para identificar cuando se hace click en los botones"""
         if mos_x>x1 and (mos_x<x2):
             x_inside = True
         else: x_inside = False
@@ -192,8 +193,10 @@ class Circuit:
             return True
         else:
             return False
-
+        
+    
     def ishovering(self,x1,y1,x2,y2):
+        """Metodo para mostrar textos al pasar sobre botones"""
         mos_x, mos_y = pygame.mouse.get_pos()
         if mos_x>x1 and (mos_x<x2):
             x_inside = True
@@ -206,7 +209,9 @@ class Circuit:
         else:
             return False
 
+    
     def simulation_mode(self,s,vis,adj):
+        """Metodo de simulación"""
         vis[s] = 1
         if self.components_type[s] == self.components[1]:
             self.components_type[s] = self.components[3]
@@ -240,8 +245,9 @@ class Circuit:
     def make_equal(self, listA, listB):
         for i in range(len(listA)):
             listA[i] = listB[i]
-            
+    
     def getNode(self,mos_x,mos_y):
+        """Metodo para obtener posiciones de los nodos"""
         for i in range(len(self.nodes)):
             self.x1 = self.nodes[i][0]
             self.y1 = self.nodes[i][1]
@@ -282,19 +288,6 @@ class Circuit:
                 self.screen.blit(self.powersupplyN, (self.nodes[i][0],self.nodes[i][1]-20))
                 self.screen.blit(self.powersupplyV, (self.nodes[i][0]+20,self.nodes[i][1]-20))
             '''
-
-    def getPowers(self,mos_x,mos_y):
-        for i in range(len(self.powers)):
-            self.x1 = self.powers[i][0]
-            self.y1 = self.powers[i][1]
-            if self.isClicked(self.x1, self.y1, self.x1 + self.power1.get_width(), self.y1 + self.power1.get_height(), mos_x, mos_y):
-                return i
-        return -1
-
-    def show_powers(self):
-        if(len(self.powers)==0): return
-        for i in range(len(self.powers)):
-            self.screen.blit(self.power_supply_color[i],self.powers[i])
 
     def show_edges(self):
 
@@ -362,7 +355,6 @@ class Circuit:
                 pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0]-50, self.nodes[self.edges[i][1]][1] + 6),(self.nodes[self.edges[i][1]][0], self.nodes[self.edges[i][1]][1] + 6), 1)
 
 
-            #arreglar
             elif self.components_type[self.edges[i][0]] == self.components[4] and self.components_type[self.edges[i][1]] == self.components[4]:
 
                 pygame.draw.line(self.screen, self.BLACK,(self.nodes[self.edges[i][0]][0], self.nodes[self.edges[i][0]][1] + 6),(self.nodes[self.edges[i][0]][0], self.nodes[self.edges[i][1]][1] + 6), 1)
@@ -525,6 +517,7 @@ class Circuit:
         self.move = False
 
     def show_buttons(self):
+        """Muestra los botones en el modo 'start'"""
         if(self.state == 'start'):
             self.screen.blit(self.algo_button,(7,550))
             self.screen.blit(self.clear_button,(7+self.algo_button.get_width()/2-53,550+self.algo_button.get_height()/2-13))
@@ -532,6 +525,7 @@ class Circuit:
             self.screen.blit(self.simulation_button,(7+self.algo_button.get_width()/2-20,498+self.algo_button.get_height()/2-13))
               
     def show_msg(self):
+         """Muestra los mensajes en pantalla"""
         self.msg_box = self.msg_font.render(self.msg, True, self.BLUE)
         self.screen.blit(self.msg_box,(215,570))
 
@@ -547,6 +541,8 @@ class Circuit:
         self.screen = sc
         running = True
         while running:
+            
+            #Muestra los botones dependiendo del modo
             self.screen.fill(self.WHITE)
             self.screen.blit(self.left_background,(0,0))
 
@@ -567,7 +563,8 @@ class Circuit:
 
             self.show_buttons()
             self.show_msg()
-
+            
+            #Start mode muestra muestra botones
             if self.state == 'start':
                 self.node_button = self.r_resistor
                 self.edge_button = self.edge
@@ -581,7 +578,8 @@ class Circuit:
                     self.screen.blit(self.add_edge,(50,84))
                 if(self.ishovering(5,116,5+self.edge_button_delete.get_width(),116+self.edge_button_delete.get_height())):
                     self.screen.blit(self.delete_edge,(50,120))
-
+           
+            #Resistor mode muestra muestra text box y botones
             if self.state == 'add_node':
 
                 if(self.ishovering(5,5,5+self.cross.get_width(),42+self.cross.get_height())):
@@ -598,7 +596,8 @@ class Circuit:
                 self.screen.blit(self.textSurface2,self.inputRectValue)
                 self.value_resistor= self.letterFont.render(("Enter resistor value "+"(\u03A9)"), True, (0,0,0))
                 self.screen.blit(self.value_resistor,(7,180))
-                
+            
+            #Power supply mode muestra muestra text box y botones
             if self.state == 'add_power_supply':
 
                 if(self.ishovering(5,5,5+self.cross.get_width(),42+self.cross.get_height())):
@@ -616,7 +615,8 @@ class Circuit:
                 self.letterFont = pygame.font.Font(None,21)
                 self.value_power_supply= self.letterFont.render("Enter power supply name "+"(V)", True, (0,0,0))
                 self.screen.blit(self.value_power_supply,(7,180))
-
+            
+            #Simulation mode
             if self.state == 'simulation_mode':
                 self.temp_node = [self.components[0] for i in range(len(self.components_type))]
                 self.make_equal(self.temp_node,self.components_type)
@@ -634,6 +634,8 @@ class Circuit:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONUP:
                     if(pos[0]!=-1 & pos[1]!=-1):
+                        
+                        #Muestra botones y redirecciona a los diferentes modos
                         if self.state == 'start':
                             if(self.isClicked(5,5,5+self.node_button.get_width(),5+self.node_button.get_height(),pos[0],pos[1])):
                                 self.state = 'add_node'
@@ -670,6 +672,7 @@ class Circuit:
                                 self.edges.clear()
                                 self.powers.clear()
                                 self.power_supply_color.clear()
+                                
                         #Add resistor mode 
                         elif self.state == 'add_node':
                             if(self.isClicked(5,5,5+self.cross.get_width(),5+self.cross.get_height(),pos[0],pos[1])):
@@ -732,7 +735,7 @@ class Circuit:
                             if(self.isClicked(5,5,5+self.cross.get_width(),5+self.cross.get_height(),pos[0],pos[1])):
                                 self.state = 'start'
                                 self.msg = ''
-
+                        #Add edges modes 
                         elif self.state == 'add_edge2':
                             self.pointB = self.getNode(pos[0],pos[1])
                             if self.pointB != -1 and self.pointB != self.pointA:
@@ -756,7 +759,7 @@ class Circuit:
                             if(self.isClicked(5,5,5+self.cross.get_width(),5+self.cross.get_height(),pos[0],pos[1])):
                                 self.state = 'start'
                                 self.msg = ''
-
+                        #Delete edges modes
                         elif self.state == 'delete_edge2':
                             self.pointB = self.getNode(pos[0],pos[1])
                             if self.pointB != -1 and self.pointB != self.pointA:
@@ -799,7 +802,8 @@ class Circuit:
                         else:    
                             self.resistorValue += event.unicode
                             self.power_supplyValue += event.unicode
-                        
+                
+                #Metodo para identificar text box de los valores 
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button==1:
                     PositionMenu = pygame.mouse.get_pos()
 
@@ -825,6 +829,7 @@ class Circuit:
                         powerSupplyVlueInfo = self.letterFont.render(self.power_supplyValue, True, (0,0,0))
                         self.screen.blit(powerSupplyNameInfo,(PositionMenu[0],PositionMenu[1]))
                         self.screen.blit(powerSupplyVlueInfo,(PositionMenu[0],PositionMenu[1]+20))
+                
                 #Components movement
                 if event.type == pg.MOUSEMOTION:
                     if event.buttons[0]:
