@@ -873,7 +873,6 @@ class Circuit:
 
             self.show_edges()
             self.show_nodes()
-            self.show_powers()
             pygame.display.update()
             #self.clock.tick(60)
             
