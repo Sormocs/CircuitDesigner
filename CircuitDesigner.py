@@ -257,13 +257,13 @@ class Circuit:
 
         for i in range(len(self.components_names)):
             #Horizontal resistor
-            if self.components_type[i] == self.components[0]:
+            if self.components_type[i] == self.components[0] or self.components_type[i] == self.components[4]:
                 self.resistorV = self.valuesFont.render(self.components_values[i] +"\u03A9", False, (0,0,0))
                 self.resistorN = self.valuesFont.render(self.components_names[i], False, (0,0,0))
                 self.screen.blit(self.resistorN, (self.nodes[i][0],self.nodes[i][1]-20))
                 self.screen.blit(self.resistorV,(self.nodes[i][0]+20,self.nodes[i][1]-20))
             #Vertical resistor
-            elif self.components_type[i] == self.components[5]:
+            elif self.components_type[i] == self.components[5] or self.components_type[i] == self.components[6]:
                 self.resistorV = self.valuesFont.render(self.components_values[i] +"\u03A9", False, (0,0,0))
                 self.resistorN = self.valuesFont.render(self.components_names[i], False, (0,0,0))
                 self.screen.blit(self.resistorN, (self.nodes[i][0]+20,self.nodes[i][1]+20))
