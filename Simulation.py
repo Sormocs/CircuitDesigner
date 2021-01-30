@@ -46,6 +46,7 @@ class SimWin:
     node_val = 0
     node_name = ""
     node_current = 0
+    v = ""
 
     formulas = Formulas()
 
@@ -760,13 +761,14 @@ class SimWin:
         show = False
         showing = "NOTHING"
         while run:
-            value = self.font.render("Value:" + str(self.node_val), True, (0, 0, 0))
-            name = self.font.render("Name:" + self.node_name, True, (0, 0, 0))
-            current = self.font.render("Current:" + str(self.node_current), True, (0, 0, 0))
+            value = self.font.render("Value: " + str(self.node_val), True, (0, 0, 0))
+            name = self.font.render("Name: " + self.node_name, True, (0, 0, 0))
+            current = self.font.render("mA: " + str(self.node_current), True, (0, 0, 0))
+            v = self.font.render("V: " + str(self.v), True, (0, 0, 0))
             pygame.display.set_mode((800,600))
             self.screen.fill((255,255,255))
             edit_again.Draw(self.screen)
-            #self.show_edges()
+            self.show_edges()
             self.show_nodes()
 
             if save_clicked:
@@ -779,10 +781,11 @@ class SimWin:
 
             if showing == "RESISTORS":
                 self.screen.blit(res_title, (20, 5))
-                pygame.draw.rect(self.screen, self.LIME_GREEN, (630, 20, 150, 120))
-                self.screen.blit(name, (635, 22))
-                self.screen.blit(value, (635, 55))
-                self.screen.blit(current, (635, 85))
+                pygame.draw.rect(self.screen, self.LIME_GREEN, (620, 20, 160, 140))
+                self.screen.blit(name, (622, 22))
+                self.screen.blit(value, (622, 55))
+                self.screen.blit(current, (622, 85))
+                self.screen.blit(v, (622, 115))
                 self.ShowRes()
                 cancel_s.Draw(self.screen)
             elif showing == "PATH":
@@ -800,10 +803,11 @@ class SimWin:
 
                 cancel_s2.Draw(self.screen)
             else:
-                pygame.draw.rect(self.screen, self.LIME_GREEN, (630, 20, 150, 120))
-                self.screen.blit(name, (635, 22))
-                self.screen.blit(value, (635, 55))
-                self.screen.blit(current, (635, 85))
+                pygame.draw.rect(self.screen, self.LIME_GREEN, (620, 20, 160, 140))
+                self.screen.blit(name, (622, 22))
+                self.screen.blit(value, (622, 55))
+                self.screen.blit(current, (622, 85))
+                self.screen.blit(v,(622,115))
                 self.screen.blit(res_title,(20,5))
                 self.screen.blit(path_title, (20, 210))
                 show_up.Draw(self.screen)
@@ -827,9 +831,11 @@ class SimWin:
                             if n == self.nodes[0]:
                                 self.node_val = str(self.resistors_value[i])+" V"
                                 self.node_current = "NA"
+                                self.v = "NA"
                             else:
                                 self.node_val = str(self.resistors_value[i]) + " Ω"
-                                self.node_current = str(self.formulas.CalcCorriente(int(self.resistors_value[0]),int(self.resistors_value[i]))*1000)+" mA"
+                                self.node_current = str(self.formulas.CalcCorriente(int(self.resistors_value[0]),int(self.resistors_value[i]))*1000)
+                                self.v = str(self.formulas.CalcTension(self.formulas.CalcCorriente(int(self.resistors_value[0]),int(self.resistors_value[i])),self.resistors_value[i]))
                         i += 1
 
 
@@ -866,6 +872,7 @@ class SimWin:
                         self.sorted_names = show[1]
 
                     if sel_nodes.Click(pos) and showing == "NOTHING":
+                        show = False
                         showing = "PATH"
                         selection = True
 

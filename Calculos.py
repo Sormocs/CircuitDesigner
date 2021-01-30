@@ -11,17 +11,17 @@ class Formulas():
 
     def CalcCorriente(self,v,r):
         """Calcula corriente"""
-        i = v/r
-        imA = i/1000
-        return imA
+        i = float(v)/float(r)
+        return i
 
     def CalcTension(self,i,r):
         """Calcula tension"""
-        v = i*r
+
+        v = float(i)*float(r)
         return v
 
     def CalcResistencia(self,i,v):
         """Calcula el valor de la residencia"""
-        r = v/i
+        r = float(v)/float(i)
         return r
 
